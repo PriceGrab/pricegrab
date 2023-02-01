@@ -36,7 +36,7 @@ public class Product {
         return stores;
     }
 
-
+ // https://docs.oracle.com/javase/tutorial/jdbc/basics/array.html helpful resource for multi value columns
     public void insertProduct() { //replacing insertTask
         try {
             Connection dbConnection = DBConnection.getInstance().getConnection();
@@ -62,8 +62,8 @@ public class Product {
             while (rs.next()) {
                 //Display values
                 String row =
-                        "ID: " + rs.getInt("id") + " Product Name: " + rs.getString(
-                                "name") + ", Price: " + rs.getDouble("price") + "  Stores: " + rs.getString("stores") + "\n";
+                        "ID: " + rs.getInt("id") + " - Product Name: " + rs.getString(
+                                "name") + " - Price: " + rs.getDouble("price") + " - Stores: " + rs.getString("stores") + "\n";
                 System.out.print(row);
             }
         } catch (SQLException e) {
