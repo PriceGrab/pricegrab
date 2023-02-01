@@ -7,6 +7,9 @@ public class Product {
     private double price;
     private Array stores;
 
+    public Product() {
+    }
+
     public Product(String name, double price, Array stores) {
         this.name = name;
         this.price = price;
@@ -90,7 +93,7 @@ public class Product {
         }
     }
 
-    public void deleteTask(int id) {
+    public void deleteProduct(int id) {
         try {
             Connection dbConnection = DBConnection.getInstance().getConnection();
             Statement stmt = dbConnection.createStatement();
