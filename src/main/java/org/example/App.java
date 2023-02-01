@@ -6,34 +6,12 @@ import utils.Product;
 import java.sql.Array;
 import java.sql.SQLException;
 import java.util.Scanner;
-import java.util.StringTokenizer;
-
 /**
  * Hello world!
  */
-public class App {
+public class App { //Code needs to get cleaned when I have time..!
     public static void main(String[] args) {
         execute();
-
-
-        //        try {
-        //            DBConnection db = DBConnection.getInstance();
-        //
-        //
-        //            String[] stores = {"acb", "xyz"};
-        //            Array anArray = db.getConnection().createArrayOf("text", stores);
-        //
-        //
-        //            Product product = new Product("Rice", 35.95, anArray);
-        //            product.deleteTask(2);
-        //            // Retrieve all tasks
-        //            product.retrieveProducts();
-        //        } catch (SQLException e) {
-        //            e.printStackTrace();
-        //        }
-
-
-
     }
 
     public static void execute() {
@@ -76,14 +54,11 @@ public class App {
                 case 1:
                     insertProduct(); break;
                 case 2:
-                    System.out.println("ss");
-                    break;
+                    updateProduct(); break;
                 case 3:
-                    System.out.println("ss");
-                    break;
+                    deleteProduct(); break;
                 case 4:
-                    System.out.println("ss");
-                    break;
+                    System.out.println("SS");
                 case 9:
                     execute();
                     break;
@@ -105,7 +80,7 @@ public class App {
         name = sc.nextLine();
         System.out.print("Product Price: ");
         price = Double.parseDouble(sc.nextLine());
-        System.out.print("Stores: "); //must seperate each store with only a single space..
+        System.out.print("Stores: "); //must separate each store with only a single space..
         stores = sc.nextLine();
         storesArray = stores.split(" ");
 
@@ -121,9 +96,45 @@ public class App {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
+    public static void updateProduct() {
+        Scanner sc = new Scanner(System.in);
+        int id;
+        String name;
+        double price;
+        String stores;
+        String[] storesArray;
 
+        System.out.println("\n-----------Updating Product-----------");
+        System.out.print("Product ID: ");
+        id = Integer.parseInt(sc.nextLine());
+        System.out.print("New Name: ");
+        name = sc.nextLine();
+        System.out.print("New Price: ");
+        price = Double.parseDouble(sc.nextLine());
+        System.out.print("New Stores: "); //must separate each store with only a single space..
+        stores = sc.nextLine();
+        storesArray = stores.split(" ");
 
+        Product product = new Product();
+        product.updateTask(id, name, price, storesArray);
+        // Retrieve all tasks
+        product.retrieveProducts();
+    }
+
+    public static void deleteProduct() {
+        Scanner sc = new Scanner(System.in);
+        int id;
+
+        System.out.println("\n-----------Delete Product-----------");
+        System.out.print("Product ID: ");
+        id = Integer.parseInt(sc.nextLine());
+
+        Product product = new Product();
+        product.deleteProduct(id);
+        // Retrieve all tasks
+        product.retrieveProducts();
     }
 
     public static void visitor() {
