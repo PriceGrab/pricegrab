@@ -8,14 +8,43 @@ import java.net.http.HttpResponse;
 
 public class API {
     // just do API.post(); in main and see wassup, its gonna make you wait like 20sec after receiving the job_id before
-    // giving you the data, otherwise you will receive "status(working)" with no data, if so then try again
+    // giving you the data. may say "status(working)" with no data, wait abit more ¯\_(ツ)_/¯
+
+    private static String source = "amazon";
+    private static String country = "us";
+    private static String values = "iphone";
+
+    public String getSource() {
+        return source;
+    }
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getValues() {
+        return values;
+    }
+    public void setValues(String values) {
+        this.values = values;
+    }
+
     public static void post() {
+
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://price-analytics.p.rapidapi.com/search-by-term"))
                 .header("content-type", "application/x-www-form-urlencoded")
                 .header("X-RapidAPI-Key", "86f79dead5mshdd5051a62609c27p10e6c0jsnb915eee2251c")
                 .header("X-RapidAPI-Host", "price-analytics.p.rapidapi.com")
-                .method("POST", HttpRequest.BodyPublishers.ofString("source=amazon&country=us&values=iphone%2011"))
+                .method("POST", HttpRequest.BodyPublishers.ofString(
+                        "source="+source+"&country="+country+"&values="+values))
                 .build();
         HttpResponse<String> response = null;
         try {
@@ -28,7 +57,7 @@ public class API {
 
         System.out.println(response.body());
         try {
-            Thread.sleep(20000);
+            Thread.sleep(15000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -41,17 +70,21 @@ public class API {
         }
     }
 
-    public static void get(String i) {
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://price-analytics.p.rapidapi.com/poll-job/" + i))
-                .header("X-RapidAPI-Key", "86f79dead5mshdd5051a62609c27p10e6c0jsnb915eee2251c")
-                .header("X-RapidAPI-Host", "price-analytics.p.rapidapi.com")
-                .method("GET", HttpRequest.BodyPublishers.noBody())
-                .build();
+    public static void get(String jobid) {
         HttpResponse<String> response = null;
+        do {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://price-analytics.p.rapidapi.com/poll-job/" + jobid))
+                    .header("X-RapidAPI-Key", "86f79dead5mshdd5051a62609c27p10e6c0jsnb915eee2251c")
+                    .header("X-RapidAPI-Host", "price-analytics.p.rapidapi.com")
+                    .method("GET", HttpRequest.BodyPublishers.noBody())
+                    .build();
 
-        {
             try {
                 response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
             } catch (IOException e) {
@@ -61,7 +94,7 @@ public class API {
             }
 
             System.out.println(response.body());
+        }while(response.body().substring(11,18).equals("working"));
 
-        }
     }
 }

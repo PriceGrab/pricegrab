@@ -12,7 +12,9 @@ import java.util.Scanner;
  */
 public class App { //Code needs to get cleaned when I have time..!
     public static void main(String[] args) {
+
         execute();
+
     }
 
     public static void execute() {
