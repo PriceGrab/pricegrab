@@ -7,8 +7,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class API {
-    // just do API.post(); in main and see wassup, its gonna make you wait like 20sec after receiving the job_id before
-    // giving you the data. may say "status(working)" with no data, wait abit more ¯\_(ツ)_/¯
+    //just do API.post(); in main and see wassup, its gonna make you wait like 25sec after receiving the job_id before
+    //  giving you the data. may say "status(working)" with no data, wait abit more. ¯\_(ツ)_/¯
 
     private static String source = "amazon";
     private static String country = "us";
@@ -36,7 +36,8 @@ public class API {
     }
 
     public static void post() {
-
+        //calls for the API to gather data, then gives us a "job id" for that call, which we will use to receive the
+        //  gathered data from a Get call.
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://price-analytics.p.rapidapi.com/search-by-term"))
@@ -54,15 +55,11 @@ public class API {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
         System.out.println(response.body());
-        try {
-            Thread.sleep(15000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
 
-        if (response.body().substring(9, 10).equals("f")) {
+        //sends job id to the get method.
+
+        if (response.body().substring(9, 14).equals("false")) {
             get(response.body().substring(25, 49));
         } else {
             System.out.println("an error occurred");
@@ -72,9 +69,16 @@ public class API {
 
     public static void get(String jobid) {
         HttpResponse<String> response = null;
+        //wait for the post call to finish its work before calling the get call, otherwise we will call, just to wait more.
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         do {
+            //if we call Get and its still on "Working" status, itll loop around and wait abit before calling again.
             try {
-                Thread.sleep(5000);
+                Thread.sleep(10000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
