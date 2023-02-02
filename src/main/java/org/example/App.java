@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.utils.DBConnection;
 
+
 import java.sql.Array;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -10,7 +11,9 @@ import java.util.Scanner;
  */
 public class App { //Code needs to get cleaned when I have time..!
     public static void main(String[] args) {
+
         execute();
+
     }
 
     public static void execute() {
