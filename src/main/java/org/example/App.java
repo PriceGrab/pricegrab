@@ -1,7 +1,6 @@
 package org.example;
 
-import utils.DBConnection;
-import utils.Product;
+import org.example.utils.DBConnection;
 
 import java.sql.Array;
 import java.sql.SQLException;

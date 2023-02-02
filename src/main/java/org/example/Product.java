@@ -1,4 +1,6 @@
-package utils;
+package org.example;
+
+import org.example.utils.DBConnection;
 
 import java.sql.*;
 
