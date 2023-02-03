@@ -10,33 +10,18 @@ public class API {
     // just do API.post(); in main and see wassup, its gonna make you wait like 20sec after receiving the job_id before
     // giving you the data. may say "status(working)" with no data, wait abit more ¯\_(ツ)_/¯
 
-    private static String source = "amazon";
-    private static String country = "us";
-    private static String values = "iphone";
+    private final String country;
+    private final String searchValue;
 
-    public String getSource() {
-        return source;
-    }
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-    public void setCountry(String country) {
+    public API(String[] stores, String country, String searchValue) {
         this.country = country;
+        this.searchValue = searchValue;
+        for (int i = 0; i < stores.length; i++) {
+            post(stores[i]);
+        }
     }
 
-    public String getValues() {
-        return values;
-    }
-    public void setValues(String values) {
-        this.values = values;
-    }
-
-    public static void post() {
-
+    public void post(String store) {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://price-analytics.p.rapidapi.com/search-by-term"))
@@ -44,11 +29,12 @@ public class API {
                 .header("X-RapidAPI-Key", "86f79dead5mshdd5051a62609c27p10e6c0jsnb915eee2251c")
                 .header("X-RapidAPI-Host", "price-analytics.p.rapidapi.com")
                 .method("POST", HttpRequest.BodyPublishers.ofString(
-                        "source="+source+"&country="+country+"&values="+values))
+                        "source=" + store + "&country=" + country + "&values=" + searchValue))
                 .build();
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
         try {
-            response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            response =
+                    HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
@@ -62,7 +48,7 @@ public class API {
             throw new RuntimeException(e);
         }
 
-        if (response.body().substring(9, 10).equals("f")) {
+        if (response.body().charAt(9) == 'f') {
             get(response.body().substring(25, 49));
         } else {
             System.out.println("an error occurred");
@@ -70,8 +56,8 @@ public class API {
         }
     }
 
-    public static void get(String jobid) {
-        HttpResponse<String> response = null;
+    public void get(String jobid) {
+        HttpResponse<String> response;
         do {
             try {
                 Thread.sleep(5000);
@@ -86,7 +72,8 @@ public class API {
                     .build();
 
             try {
-                response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+                response = HttpClient.newHttpClient()
+                        .send(request, HttpResponse.BodyHandlers.ofString());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (InterruptedException e) {
@@ -94,7 +81,7 @@ public class API {
             }
 
             System.out.println(response.body());
-        }while(response.body().substring(11,18).equals("working"));
+        } while (response.body().startsWith("working", 11));
 
     }
 }
