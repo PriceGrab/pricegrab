@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.utils.*;
 
+
 import java.sql.Array;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -190,6 +191,5 @@ public class App { //Code needs to get cleaned when I have time..!
 
         new API(new String[] {"amazon", "google"}, country,
                 searchValue);// ex. "amazon", "us", "macbook pro 2021 m1 Silver 16GB " more detailed search == higher accuracy results
-
     }
 }
