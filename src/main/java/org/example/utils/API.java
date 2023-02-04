@@ -1,10 +1,24 @@
 package org.example.utils;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.example.ProductInfo;
+
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class API {
     //just do API.post(); in main and see wassup, its gonna make you wait like 25sec after receiving the job_id before
@@ -13,15 +27,13 @@ public class API {
     private final String country;
     private final String searchValue;
 
-    public API(String[] stores, String country, String searchValue) {
+    public API(String store, String country, String searchValue) throws IOException {
         this.country = country;
         this.searchValue = searchValue;
-        for (int i = 0; i < stores.length; i++) {
-            post(stores[i]);
-        }
+        post(store);
     }
 
-    public void post(String store) {
+    public void post(String store) throws IOException {
         //calls for the API to gather data, then gives us a "job id" for that call, which we will use to receive the
         //  gathered data from a Get call.
         HttpRequest request = HttpRequest.newBuilder()
@@ -52,7 +64,7 @@ public class API {
         }
     }
 
-    public void get(String jobid) {
+    public void get(String jobid) throws IOException {
         HttpResponse<String> response;
         //wait for the post call to finish its work before calling the get call, otherwise we will call, just to wait more.
         try {
@@ -62,6 +74,7 @@ public class API {
         }
 
         do {
+            System.out.println("i'm looping inside GET request");
             //if we call Get and its still on "Working" status, itll loop around and wait abit before calling again.
             try {
                 Thread.sleep(10000);
@@ -84,8 +97,68 @@ public class API {
                 throw new RuntimeException(e);
             }
 
-            System.out.println(response.body());
+            if (response != null) {
+                System.out.println(response.body());
+
+                try (FileWriter fileWriter = new FileWriter(
+                        "src/main/java/org/example/APIResults.json", false)) {
+                    fileWriter.write(response.body());
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
         } while (response.body().startsWith("working", 11));
 
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());    // Because I am using LocalDateTime
+
+        String jsonString = new String(
+                Files.readAllBytes(Paths.get("src/main/java/org/example/APIResults.json")));
+        Job job = mapper.readValue(jsonString, Job.class);
+
+        ArrayList<ProductInfo> productInfos = new ArrayList<>();
+        for (JobOffer jobOffers : job.results().get(0).content().offers()) {
+            productInfos.add(
+                    new ProductInfo(jobOffers.sellerUrl(), jobOffers.seller(), jobOffers.currency(),
+                            jobOffers.name(), jobOffers.price()));
+        }
+
+        printSearchResults(productInfos);
     }
+
+    public void printSearchResults(ArrayList<ProductInfo> productInfos) {
+        System.out.println("---------------Search Result--------------");
+
+        for (int i = 0; i < productInfos.size(); i++) {
+            System.out.println(i + 1 + "- " + productInfos.get(i).getName() + " -> " + "Price: "
+                    + productInfos.get(i).getPrice());
+        }
+
+    }
+}
+
+
+record Job(@JsonProperty("job_id") String jobId, String status, List<JobResult> results) {
+}
+
+
+record JobResult(@JsonProperty("updated_at") LocalDateTime updatedAt, ResultQuery query,
+                 JobOffers content, boolean success) {
+}
+
+
+record ResultQuery(@JsonProperty("max_age") int maxGae, @JsonProperty("max_pages") int maxPages,
+                   String value, String key, String country, String topic, String source) {
+}
+
+
+record JobOffers(@JsonProperty("offers_count") int offersCount, List<JobOffer> offers) {
+}
+
+
+record JobOffer(@JsonProperty("review_count") Integer reviewCount,
+                @JsonProperty("review_rating") Double reviewRating,
+                @JsonProperty("seller_url") URL sellerUrl, String seller, String condition,
+                int shipping, String currency, BigDecimal price, URL url, String name) {
 }

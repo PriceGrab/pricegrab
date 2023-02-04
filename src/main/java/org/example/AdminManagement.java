@@ -36,20 +36,22 @@ public class AdminManagement { //might wanna cancel this class and just make it 
     public void setPrice(double price) {
         this.price = price;
     }
+
     public void setStores(Array stores) {
         this.stores = stores;
     }
+
     public Array getStores() {
         return stores;
     }
 
- // https://docs.oracle.com/javase/tutorial/jdbc/basics/array.html helpful resource for multi value columns
+    // https://docs.oracle.com/javase/tutorial/jdbc/basics/array.html helpful resource for multi-values columns
     public void insertProduct() { //replacing insertTask
         try {
             Connection dbConnection = DBConnection.getInstance().getConnection();
             Statement stmt = dbConnection.createStatement();
-            PreparedStatement insertStmt =
-                    dbConnection.prepareStatement("INSERT INTO pricegrab (name, price, stores) VALUES (?, ?, ?);");
+            PreparedStatement insertStmt = dbConnection.prepareStatement(
+                    "INSERT INTO pricegrab (name, price, stores) VALUES (?, ?, ?);");
             insertStmt.setString(1, this.name);
             insertStmt.setDouble(2, this.price);
             insertStmt.setArray(3, this.stores);
@@ -68,9 +70,9 @@ public class AdminManagement { //might wanna cancel this class and just make it 
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 //Display values
-                String row =
-                        "ID: " + rs.getInt("id") + " - Product Name: " + rs.getString(
-                                "name") + " - Price: " + rs.getDouble("price") + " - Stores: " + rs.getString("stores") + "\n";
+                String row = "ID: " + rs.getInt("id") + " - Product Name: " + rs.getString("name")
+                        + " - Price: " + rs.getDouble("price") + " - Stores: " + rs.getString(
+                        "stores") + "\n";
                 System.out.print(row);
             }
         } catch (SQLException e) {
@@ -83,11 +85,12 @@ public class AdminManagement { //might wanna cancel this class and just make it 
         try {
             Connection dbConnection = DBConnection.getInstance().getConnection();
             Statement stmt = dbConnection.createStatement();
-            PreparedStatement updateStmt =
-                    dbConnection.prepareStatement("UPDATE pricegrab SET name = ?, price = ?, stores = ? WHERE id = ?");
+            PreparedStatement updateStmt = dbConnection.prepareStatement(
+                    "UPDATE pricegrab SET name = ?, price = ?, stores = ? WHERE id = ?");
             updateStmt.setString(1, updateProductName);
             updateStmt.setDouble(2, price);
-            Array anArray = dbConnection.createArrayOf("text", stores); //create array objects of stores
+            Array anArray =
+                    dbConnection.createArrayOf("text", stores); //create array objects of stores
             updateStmt.setArray(3, anArray);
             updateStmt.setInt(4, id);
             int row = updateStmt.executeUpdate();

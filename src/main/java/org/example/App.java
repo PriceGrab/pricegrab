@@ -3,16 +3,17 @@ package org.example;
 import org.example.utils.*;
 
 
+import java.io.IOException;
 import java.sql.Array;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class App { //Code needs to get cleaned when I have time..!
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         execute();
     }
 
-    public static void execute() {
+    public static void execute() throws IOException {
         Scanner sc = new Scanner(System.in);
         int choice;
 
@@ -33,7 +34,7 @@ public class App { //Code needs to get cleaned when I have time..!
         } while (true);
     }
 
-    public static void admin() {
+    public static void admin() throws IOException {
         Scanner sc = new Scanner(System.in);
         int choice;
 
@@ -138,7 +139,7 @@ public class App { //Code needs to get cleaned when I have time..!
         product.retrieveProducts();
     }
 
-    public static void visitor() {
+    public static void visitor() throws IOException {
         Scanner sc = new Scanner(System.in);
         int choice;
 
@@ -164,7 +165,7 @@ public class App { //Code needs to get cleaned when I have time..!
         } while (true);
     }
 
-    public static void visitorSearch() {
+    public static void visitorSearch() throws IOException {
         Scanner sc = new Scanner(System.in);
         String searchValue;
         String country;
@@ -189,7 +190,10 @@ public class App { //Code needs to get cleaned when I have time..!
         * at and ch on Amazon use DE marketplace with AT or CH address
          */
 
-        new API(new String[] {"amazon", "google"}, country,
-                searchValue);// ex. "amazon", "us", "macbook pro 2021 m1 Silver 16GB " more detailed search == higher accuracy results
+        new API("google", country,
+                searchValue);// ex. "amazon", "us", "macbook pro 2021 silver 14-inch m1 16gb ram new 512GB refurbished" more detailed search == higher accuracy results
+        //fixed stores for now just to simplify things
+        //the google value gives us several stores in fact, like walmart, amazon, google shopping, apple.com, adorama.com and many more...
+        //the amazon value gives us several products but within amazon.com only.
     }
 }

@@ -1,33 +1,38 @@
 package org.example;
 
+import java.math.BigDecimal;
+import java.net.URL;
+
 public class ProductInfo {
-    private String productName;
-    private double price;
-    private String website;
+    private URL sellerURL;
+    private String seller;
     private String currency;
+    private String name;
+    private BigDecimal price;
 
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
+    public ProductInfo(URL sellerURL, String seller, String currency, String name,
+            BigDecimal price) {
+        this.sellerURL = sellerURL;
+        this.seller = seller;
+        this.currency = currency;
+        this.name = name;
         this.price = price;
     }
 
-    public String getWebsite() {
-        return website;
+    public URL getSellerURL() {
+        return sellerURL;
     }
 
-    public void setWebsite(String website) {
-        this.website = website;
+    public void setSellerURL(URL sellerURL) {
+        this.sellerURL = sellerURL;
+    }
+
+    public String getSeller() {
+        return seller;
+    }
+
+    public void setSeller(String seller) {
+        this.seller = seller;
     }
 
     public String getCurrency() {
@@ -38,14 +43,25 @@ public class ProductInfo {
         this.currency = currency;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
 
-
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 
     @Override
     public String toString() {
-        return "ProductInfo{" + "productName='" + productName + '\'' + ", price=" + price
-                + ", website='" + website + '\'' + ", currency='" + currency + '\'' + '}';
+        return "Product{" + "sellerURL=" + sellerURL + ", seller='" + seller + '\'' + ", currency='"
+                + currency + '\'' + ", name='" + name + '\'' + ", price=" + price + '}';
     }
 }
