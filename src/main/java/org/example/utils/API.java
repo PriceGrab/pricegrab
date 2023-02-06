@@ -19,6 +19,8 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class API {
     //just do API.post(); in main and see wassup, its gonna make you wait like 25sec after receiving the job_id before
@@ -76,10 +78,10 @@ public class API {
         do {
             //if we call Get and its still on "Working" status, itll loop around and wait abit before calling again.
             try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://price-analytics.p.rapidapi.com/poll-job/" + jobid))
                     .header("X-RapidAPI-Key", "86f79dead5mshdd5051a62609c27p10e6c0jsnb915eee2251c")
@@ -123,6 +125,12 @@ public class API {
                     new ProductInfo(jobOffers.sellerUrl(), jobOffers.seller(), jobOffers.currency(),
                             jobOffers.name(), jobOffers.price()));
         }
+        Collections.sort(productInfos, new Comparator<ProductInfo>() {
+            @Override
+            public int compare(ProductInfo o1, ProductInfo o2) {
+                return Integer.valueOf(o1.getPrice()).compareTo(o2.getPrice());
+            }
+        });
 
         printSearchResults(productInfos);
     }
@@ -131,11 +139,15 @@ public class API {
         System.out.println("---------------Search Result--------------");
 
         for (int i = 0; i < productInfos.size(); i++) {
-            System.out.println(i + 1 + "- " + productInfos.get(i).getName() + " -> " + "Price: "
-                    + productInfos.get(i).getPrice());
+            System.out.println(i + 1 + "- " + "Price: " + productInfos.get(i).getPrice()+
+                    " -> " + productInfos.get(i).getName()  );
         }
 
     }
+    public void sortProductinfo(){
+
+    }
+
 }
 
 
