@@ -19,6 +19,8 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class API {
     //just do API.post(); in main and see wassup, its gonna make you wait like 25sec after receiving the job_id before
@@ -53,8 +55,7 @@ public class API {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(response.body());
-
+        System.out.println("Fetching your request. hold on a moment!");
         //sends job id to the get method.
         if (response.body().charAt(9) == 'f') {
             get(response.body().substring(25, 49));
@@ -65,6 +66,7 @@ public class API {
     }
 
     public void get(String jobid) throws IOException {
+
         HttpResponse<String> response;
         //wait for the post call to finish its work before calling the get call, otherwise we will call, just to wait more.
         try {
@@ -72,15 +74,14 @@ public class API {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
+        int count = 0;
         do {
-            System.out.println("i'm looping inside GET request");
             //if we call Get and its still on "Working" status, itll loop around and wait abit before calling again.
             try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://price-analytics.p.rapidapi.com/poll-job/" + jobid))
                     .header("X-RapidAPI-Key", "86f79dead5mshdd5051a62609c27p10e6c0jsnb915eee2251c")
@@ -98,7 +99,6 @@ public class API {
             }
 
             if (response != null) {
-                System.out.println(response.body());
 
                 try (FileWriter fileWriter = new FileWriter(
                         "src/main/java/org/example/APIResults.json", false)) {
@@ -107,7 +107,9 @@ public class API {
                     System.out.println(e.getMessage());
                 }
             }
-
+            if(count > 0)
+                System.out.println("almost there!...");
+            count =+ 1;
         } while (response.body().startsWith("working", 11));
 
         ObjectMapper mapper = new ObjectMapper();
@@ -123,6 +125,12 @@ public class API {
                     new ProductInfo(jobOffers.sellerUrl(), jobOffers.seller(), jobOffers.currency(),
                             jobOffers.name(), jobOffers.price()));
         }
+        Collections.sort(productInfos, new Comparator<ProductInfo>() {
+            @Override
+            public int compare(ProductInfo o1, ProductInfo o2) {
+                return Integer.valueOf(o1.getPrice()).compareTo(o2.getPrice());
+            }
+        });
 
         printSearchResults(productInfos);
     }
@@ -131,11 +139,15 @@ public class API {
         System.out.println("---------------Search Result--------------");
 
         for (int i = 0; i < productInfos.size(); i++) {
-            System.out.println(i + 1 + "- " + productInfos.get(i).getName() + " -> " + "Price: "
-                    + productInfos.get(i).getPrice());
+            System.out.println(i + 1 + "- " + "Price: " + productInfos.get(i).getPrice()+
+                    " -> " + productInfos.get(i).getName()  );
         }
 
     }
+    public void sortProductinfo(){
+
+    }
+
 }
 
 

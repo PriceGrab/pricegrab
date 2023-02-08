@@ -1,6 +1,7 @@
 package org.example;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 
 public class ProductInfo {
@@ -8,7 +9,8 @@ public class ProductInfo {
     private String seller;
     private String currency;
     private String name;
-    private BigDecimal price;
+    private int price;
+
 
     public ProductInfo(URL sellerURL, String seller, String currency, String name,
             BigDecimal price) {
@@ -16,7 +18,7 @@ public class ProductInfo {
         this.seller = seller;
         this.currency = currency;
         this.name = name;
-        this.price = price;
+        this.price = price.setScale(0, RoundingMode.HALF_UP).intValueExact();
     }
 
     public URL getSellerURL() {
@@ -51,11 +53,9 @@ public class ProductInfo {
         this.name = name;
     }
 
-    public BigDecimal getPrice() {
-        return price;
-    }
+    public int getPrice() { return price; }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

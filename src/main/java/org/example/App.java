@@ -146,7 +146,7 @@ public class App { //Code needs to get cleaned when I have time..!
         do {
             System.out.println("\n-----------Welcome to Pricegrab-----------");
             System.out.println("\nChoose Operation:");
-            System.out.println("\t-1- Search Product\n");
+            System.out.println("\t-1- Search Product\n\t :");
 
             System.out.println("\t-9- Change User Type");
             System.out.println("\t-0- to Exit the program");
@@ -175,6 +175,7 @@ public class App { //Code needs to get cleaned when I have time..!
         System.out.println();
         System.out.print("Country: ");
         country = sc.nextLine();
+        System.out.println();
 
          /*
         source - website from which to collect data; possible sources: ebay, amazon, google, idealo etc.)
