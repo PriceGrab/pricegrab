@@ -28,12 +28,17 @@ public class API {
     private final String country;
     private final String searchValue;
 
+    public API(){
+        country = "us";
+        searchValue = "iphone";
+    }
+
     public API(String store, String country, String searchValue) throws IOException {
         this.country = country;
         this.searchValue = searchValue;
         post(store);
     }
-
+    
     public void post(String store) throws IOException {
         //calls for the API to gather data, then gives us a "job id" for that call, which we will use to receive the
         //  gathered data from a Get call.
@@ -140,7 +145,7 @@ public class API {
     }
 
     //tests if a string can be a number/float
-    public static boolean isNumeric(String string) {
+    public boolean isNumeric(String string) {
         float intValue;
 
         if(string == null || string.equals("")) {
