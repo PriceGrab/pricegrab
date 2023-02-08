@@ -1,6 +1,6 @@
-package org.example;
+package org.pricegrab;
 
-import org.example.utils.DBConnection;
+import org.pricegrab.utils.DBConnection;
 
 import java.sql.*;
 

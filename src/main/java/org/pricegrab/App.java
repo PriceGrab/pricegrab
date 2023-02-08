@@ -1,6 +1,6 @@
-package org.example;
+package org.pricegrab;
 
-import org.example.utils.*;
+import org.pricegrab.utils.*;
 
 
 import java.io.IOException;
