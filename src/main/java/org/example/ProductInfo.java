@@ -9,16 +9,16 @@ public class ProductInfo {
     private String seller;
     private String currency;
     private String name;
-    private int price;
+    private String price;
 
 
     public ProductInfo(URL sellerURL, String seller, String currency, String name,
-            BigDecimal price) {
+                       String price) {
         this.sellerURL = sellerURL;
         this.seller = seller;
         this.currency = currency;
         this.name = name;
-        this.price = price.setScale(0, RoundingMode.HALF_UP).intValueExact();
+        this.price = price;
     }
 
     public URL getSellerURL() {
@@ -53,9 +53,9 @@ public class ProductInfo {
         this.name = name;
     }
 
-    public int getPrice() { return price; }
+    public String getPrice() { return price; }
 
-    public void setPrice(int price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
