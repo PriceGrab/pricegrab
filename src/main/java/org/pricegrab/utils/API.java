@@ -100,7 +100,7 @@ public class API {
             if (response != null) {
 
                 try (FileWriter fileWriter = new FileWriter(
-                        "src/main/java/org/example/APIResults.json", false)) {
+                        "src/main/java/org/pricegrab/APIResults.json", false)) {
                     fileWriter.write(response.body());
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
@@ -115,7 +115,7 @@ public class API {
         mapper.registerModule(new JavaTimeModule());    // Because I am using LocalDateTime
 
         String jsonString = new String(
-                Files.readAllBytes(Paths.get("src/main/java/org/example/APIResults.json")));
+                Files.readAllBytes(Paths.get("src/main/java/org/pricegrab/APIResults.json")));
         Job job = mapper.readValue(jsonString, Job.class);
 
         ArrayList<ProductInfo> productInfos = new ArrayList<>();

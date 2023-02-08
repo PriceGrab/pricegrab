@@ -7,7 +7,7 @@
 
     <groupId>org.pricegrab</groupId>
     <artifactId>pricegrab</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
