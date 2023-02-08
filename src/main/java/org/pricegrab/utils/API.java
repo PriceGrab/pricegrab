@@ -144,7 +144,6 @@ public class API {
         float intValue;
 
         if(string == null || string.equals("")) {
-            System.out.println("String cannot be parsed, it is null or empty.");
             return false;
         }
 
@@ -152,7 +151,6 @@ public class API {
             intValue = Float.parseFloat(string);
             return true;
         } catch (NumberFormatException e) {
-            System.out.println("Input String cannot be parsed to Integer.");
         }
         return false;
 
