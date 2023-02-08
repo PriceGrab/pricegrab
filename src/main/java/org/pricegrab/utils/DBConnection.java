@@ -1,4 +1,4 @@
-package org.example.utils;
+package org.pricegrab.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

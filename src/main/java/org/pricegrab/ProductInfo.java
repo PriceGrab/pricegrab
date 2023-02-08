@@ -1,4 +1,4 @@
-package org.example;
+package org.pricegrab;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
