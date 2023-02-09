@@ -120,7 +120,7 @@ public class App { //Code needs to get cleaned when I have time..!
         storesArray = stores.split(" ");
 
         AdminManagement product = new AdminManagement();
-        product.updateTask(id, name, price, storesArray);
+        product.updateProduct(id, name, price, storesArray);
         // Retrieve all tasks
         product.retrieveProducts();
     }
@@ -177,6 +177,12 @@ public class App { //Code needs to get cleaned when I have time..!
         country = sc.nextLine();
         System.out.println();
 
+        new API("google", country,
+                searchValue);// ex. "amazon", "us", "macbook pro 2021 silver 14-inch m1 16gb ram new 512GB refurbished" more detailed search == higher accuracy results
+        //fixed stores for now just to simplify things
+        //the google value gives us several stores in fact, like walmart, amazon, google shopping, apple.com, adorama.com and many more...
+        //the amazon value gives us several products but within amazon.com only.
+
          /*
         source - website from which to collect data; possible sources: ebay, amazon, google, idealo etc.)
         country - alpha-2 country code of the source to request from (de, at,us, etc.)
@@ -190,11 +196,5 @@ public class App { //Code needs to get cleaned when I have time..!
         ebay: us, uk, de, au, at, be, ca, fr, de, ie, it, hk, my, nl, ph, pl, sg, es, ch, au
         * at and ch on Amazon use DE marketplace with AT or CH address
          */
-
-        new API("google", country,
-                searchValue);// ex. "amazon", "us", "macbook pro 2021 silver 14-inch m1 16gb ram new 512GB refurbished" more detailed search == higher accuracy results
-        //fixed stores for now just to simplify things
-        //the google value gives us several stores in fact, like walmart, amazon, google shopping, apple.com, adorama.com and many more...
-        //the amazon value gives us several products but within amazon.com only.
     }
 }

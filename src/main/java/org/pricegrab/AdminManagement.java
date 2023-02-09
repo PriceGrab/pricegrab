@@ -81,7 +81,7 @@ public class AdminManagement { //might wanna cancel this class and just make it 
 
     }
 
-    public void updateTask(int id, String updateProductName, double price, String[] stores) {
+    public void updateProduct(int id, String updateProductName, double price, String[] stores) {
         try {
             Connection dbConnection = DBConnection.getInstance().getConnection();
             Statement stmt = dbConnection.createStatement();
