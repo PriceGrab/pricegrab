@@ -90,10 +90,10 @@ public class App { //Code needs to get cleaned when I have time..!
 
             Array anArray = db.getConnection().createArrayOf("text", storesArray);
 
-            AdminManagement product = new AdminManagement(name, price, anArray);
-            product.insertProduct();
+//            UserManagement product = new UserManagement(name, price, anArray);
+//            product.insertProduct();
             // Retrieve all tasks
-            product.retrieveProducts();
+//            product.retrieveProducts();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -118,7 +118,7 @@ public class App { //Code needs to get cleaned when I have time..!
         stores = sc.nextLine();
         storesArray = stores.split(" ");
 
-        AdminManagement product = new AdminManagement();
+        UserManagement product = new UserManagement();
         product.updateProduct(id, name, price, storesArray);
         // Retrieve all tasks
         product.retrieveProducts();
@@ -132,7 +132,7 @@ public class App { //Code needs to get cleaned when I have time..!
         System.out.print("Product ID: ");
         id = Integer.parseInt(sc.nextLine());
 
-        AdminManagement product = new AdminManagement();
+        UserManagement product = new UserManagement();
         product.deleteProduct(id);
         // Retrieve all tasks
         product.retrieveProducts();
@@ -145,7 +145,9 @@ public class App { //Code needs to get cleaned when I have time..!
         do {
             System.out.println("\n-----------Welcome to Pricegrab-----------");
             System.out.println("\nChoose Operation:");
-            System.out.println("\t-1- Search Product\n\t :");
+            System.out.println("\t-1- Search Product");
+            System.out.println("\t-2- Register");
+            System.out.println("\t-3- Login\n\t :");
 
             System.out.println("\t-9- Change User Type");
             System.out.println("\t-0- to Exit the program");
@@ -154,6 +156,12 @@ public class App { //Code needs to get cleaned when I have time..!
             switch (choice) {
                 case 1:
                     visitorSearch();
+                    break;
+                case 2:
+                    registerNewUser();
+                    break;
+                case 3:
+                    login();
                     break;
                 case 9:
                     execute();
@@ -195,5 +203,37 @@ public class App { //Code needs to get cleaned when I have time..!
         ebay: us, uk, de, au, at, be, ca, fr, de, ie, it, hk, my, nl, ph, pl, sg, es, ch, au
         * at and ch on Amazon use DE marketplace with AT or CH address
          */
+    }
+
+    public static void registerNewUser() {
+        String newUsername;
+        String newPassword;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("\n-----------Register New User-----------");
+        System.out.print("\nEnter New Username: ");
+        newUsername = sc.nextLine();
+        System.out.print("\nEnter New Password: ");
+        newPassword = sc.nextLine();
+        new UserManagement().addNewUser(newUsername, newPassword); //needs duplicate key values exception handling, reenter pass + username until it's unique.
+    }
+
+    public static void login() {
+        String username;
+        String password;
+        boolean flag;
+        Scanner sc = new Scanner(System.in);
+        do {
+            System.out.println("\n-----------Login-----------");
+            System.out.print("\n\tEnter Username: ");
+            username = sc.nextLine();
+            System.out.print("\tEnter Password: ");
+            password = sc.nextLine();
+
+            flag = new UserManagement().validateUser(username, password); //needs duplicate key values exception handling, reenter pass + username until it's unique.
+            if(!flag)
+                System.out.println("\n\tWrong credentials.\n\tPlease try again...");
+        } while(!flag);
+        System.out.println("access granted:");
+
     }
 }
