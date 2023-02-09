@@ -28,19 +28,24 @@ public class API {
     private final String country;
     private final String searchValue;
 
+    public API(){
+        country = "us";
+        searchValue = "iphone";
+    }
+
     public API(String store, String country, String searchValue) throws IOException {
         this.country = country;
         this.searchValue = searchValue;
         post(store);
     }
-
+    
     public void post(String store) throws IOException {
         //calls for the API to gather data, then gives us a "job id" for that call, which we will use to receive the
         //  gathered data from a Get call.
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://price-analytics.p.rapidapi.com/search-by-term"))
                 .header("content-type", "application/x-www-form-urlencoded")
-                .header("X-RapidAPI-Key", "86f79dead5mshdd5051a62609c27p10e6c0jsnb915eee2251c")
+                .header("X-RapidAPI-Key", "d366a00dd9mshb2815bd04b4cc8ep108e2fjsne8b23608c808")
                 .header("X-RapidAPI-Host", "price-analytics.p.rapidapi.com")
                 .method("POST", HttpRequest.BodyPublishers.ofString(
                         "source=" + store + "&country=" + country + "&values=" + searchValue))
@@ -124,27 +129,55 @@ public class API {
                     new ProductInfo(jobOffers.sellerUrl(), jobOffers.seller(), jobOffers.currency(),
                             jobOffers.name(), jobOffers.price()));
         }
+
+        removeStringPrices(productInfos);
+
+        // Sorts the productInfos array list by price
         Collections.sort(productInfos, new Comparator<ProductInfo>() {
             @Override
             public int compare(ProductInfo o1, ProductInfo o2) {
-                return Integer.valueOf(o1.getPrice()).compareTo(o2.getPrice());
+                return Float.valueOf(Float.parseFloat(o1.getPrice())).compareTo(Float.parseFloat(o2.getPrice()));
             }
         });
 
         printSearchResults(productInfos);
+
+    }
+
+    //tests if a string can be a number/float
+    public boolean isNumeric(String string) {
+        float intValue;
+
+        if(string == null || string.equals("")) {
+            return false;
+        }
+
+        try {
+            intValue = Float.parseFloat(string);
+            return true;
+        } catch (NumberFormatException e) {
+        }
+        return false;
+
+    }
+
+    //removes string prices
+    public void removeStringPrices(ArrayList<ProductInfo> productInfos){
+        for (int i = 0; i < productInfos.size(); i++) {
+            if(productInfos.get(i).getPrice()==null || !(isNumeric(productInfos.get(i).getPrice()))) {
+                productInfos.remove(i);
+                i=-1;
+            }
+        }
+
     }
 
     public void printSearchResults(ArrayList<ProductInfo> productInfos) {
         System.out.println("---------------Search Result--------------");
-
         for (int i = 0; i < productInfos.size(); i++) {
             System.out.println(i + 1 + "- " + "Price: " + productInfos.get(i).getPrice()+
-                    " -> " + productInfos.get(i).getName()  );
+                    " -> " + productInfos.get(i).getName() +" "+ productInfos.get(i).getSellerURL());
         }
-
-    }
-    public void sortProductinfo(){
-
     }
 
 }
@@ -171,5 +204,5 @@ record JobOffers(@JsonProperty("offers_count") int offersCount, List<JobOffer> o
 record JobOffer(@JsonProperty("review_count") Integer reviewCount,
                 @JsonProperty("review_rating") Double reviewRating,
                 @JsonProperty("seller_url") URL sellerUrl, String seller, String condition,
-                int shipping, String currency, BigDecimal price, URL url, String name) {
+                int shipping, String currency, String price, URL url, String name) {
 }

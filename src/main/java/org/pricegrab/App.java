@@ -17,7 +17,6 @@ public class App { //Code needs to get cleaned when I have time..!
         Scanner sc = new Scanner(System.in);
         int choice;
 
-
         do {
             System.out.println("\n-----------Welcome to pricegrab-----------");
             System.out.println(
