@@ -11,15 +11,14 @@ public class Admin {
         int choice;
 
         do {
-            System.out.println("\n-----------Admin-----------");
-            System.out.println("Choose an Operation:");
-            System.out.println("\t-1- Manage Registered Users\n"); //to be implemented
-            System.out.println("\t-9- Change User Type");
-            System.out.println("\t-0- to Exit the program");
+            System.out.println("\n-----------Admin-----------"
+                    +"\nChoose an Operation:"
+                    +"\n\t-1- Manage Registered Users\n\t :" //to be implemented
+                    +"\n\t-9- Change User Type"
+                    +"\n\t-0- to Exit the program");
             try {
                 choice = Integer.parseInt(sc.nextLine());
-            }
-            catch(NumberFormatException nfe){
+            } catch (NumberFormatException nfe) {
                 System.out.println("Please enter a number from the chioces above.");
                 continue;
             }
@@ -56,10 +55,9 @@ public class Admin {
             System.out.println("\t-1- View list of Users");
             System.out.println("\t-2- Delete User\n"); //to be implemented
             System.out.println("\t-0- Back to Admin Operations"); //to be implemented
-            try{
-            choice = Integer.parseInt(sc.nextLine());
-            }
-            catch(NumberFormatException nfe){
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException nfe) {
                 System.out.println("\nPlease enter a Number from the choices provided.");
                 continue;
             }

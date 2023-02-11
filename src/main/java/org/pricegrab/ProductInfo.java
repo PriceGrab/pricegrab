@@ -49,7 +49,9 @@ public class ProductInfo {
         this.name = name;
     }
 
-    public String getPrice() { return price; }
+    public String getPrice() {
+        return price;
+    }
 
     public void setPrice(String price) {
         this.price = price;
