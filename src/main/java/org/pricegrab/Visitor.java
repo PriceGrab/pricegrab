@@ -16,14 +16,13 @@ public class Visitor {
         int choice;
 
         do {
-            System.out.println("\n-----------Welcome to Pricegrab-----------");
-            System.out.println("\nChoose Operation:");
-            System.out.println("\t-1- Search Product");
-            System.out.println("\t-2- Register");
-            System.out.println("\t-3- Login\n\t :");
-
-            System.out.println("\t-9- Change User Type");
-            System.out.println("\t-0- to Exit the program");
+            System.out.println("\n-----------Welcome to Pricegrab-----------"
+                    + "\nChoose Operation:"
+                    + "\n\t-1- Search Product"
+                    + "\n\t-2- Register"
+                    + "\n\t-3- Login\n\t :"
+                    + "\n\t-9- Change User Type"
+                    + "\n\t-0- to Exit the program");
             try {
                 choice = Integer.parseInt(sc.nextLine());
             } catch (NumberFormatException nfe) {
@@ -51,11 +50,10 @@ public class Visitor {
     public void visitorSearch() throws IOException {
         String searchValue;
         String country;
-        System.out.println("\n-----------Search Products-----------");
-        System.out.print("Search: ");
+        System.out.print("\n-----------Search Products-----------\n"
+                + "Search: ");
         searchValue = sc.nextLine();
-        System.out.println();
-        System.out.print("Country: ");
+        System.out.print("\nCountry: ");
         country = sc.nextLine();
         System.out.println();
 
@@ -83,11 +81,10 @@ public class Visitor {
     public void registerdUsersSearch(String username) throws IOException {
         String searchValue;
         String country;
-        System.out.println("\n-----------Search Products-----------");
-        System.out.print("Search: ");
+        System.out.print("\n-----------Search Products-----------\n"
+                + "Search: ");
         searchValue = sc.nextLine();
-        System.out.println();
-        System.out.print("Country: ");
+        System.out.print("\nCountry: ");
         country = sc.nextLine();
         System.out.println();
 
@@ -139,11 +136,11 @@ public class Visitor {
 
         boolean logout = false;
         do {
-            System.out.println("\n-----------Welcome to Pricegrab " + username + "-----------");
-            System.out.println("\nChoose Operation:");
-            System.out.println("\t-1- Search Product");
-            System.out.println("\t-2- View favorite list");
-            System.out.println("\t-3- Logout\n\t :");
+            System.out.println("\n-----------Welcome to Pricegrab " + username + "-----------"
+                    + "\nChoose Operation:"
+                    + "\n\t-1- Search Product"
+                    + "\n\t-2- View favorite list"
+                    + "\n\t-3- Logout");
 
             System.out.println("\t-0- to Exit the program");
             try {

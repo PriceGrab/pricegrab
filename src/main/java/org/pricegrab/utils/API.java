@@ -28,7 +28,7 @@ public class API {
         searchValue = "iphone";
     }
 
-    public API(String country, String searchValue) throws IOException {
+    public API(String country, String searchValue) {
         this.country = country;
         this.searchValue = searchValue;
     }
