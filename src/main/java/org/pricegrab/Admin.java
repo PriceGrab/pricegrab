@@ -13,18 +13,14 @@ public class Admin {
         do {
             System.out.println("\n-----------Admin-----------");
             System.out.println("Choose an Operation:");
-            System.out.println("\t-1- Manage Registered Users"); //to be implemented
-            System.out.println("\t-2- Update Product"); //canceled
-            System.out.println("\t-3- Remove Product"); //canceled
-            System.out.println("\t-4- List All Products\n"); //canceled
+            System.out.println("\t-1- Manage Registered Users\n"); //to be implemented
             System.out.println("\t-9- Change User Type");
             System.out.println("\t-0- to Exit the program");
             choice = Integer.parseInt(sc.nextLine()); //needs exception handling (later)
 
             switch (choice) {
                 case 1:
-                    //                    insertProduct();
-                    break;
+                    manageRegisteredUsers();
                 case 2:
                     //                    updateProduct();
                     break;
@@ -41,4 +37,25 @@ public class Admin {
         } while (true);
     }
 
+    public void manageRegisteredUsers() {
+        Scanner sc = new Scanner(System.in);
+        int choice;
+        do {
+            System.out.println("\n-----------Managing Users-----------");
+            System.out.println("Choose an Operation:");
+            System.out.println("\t-1- View list of Users");
+            System.out.println("\t-2- Delete User\n"); //to be implemented
+            System.out.println("\t-0- Admin Operations"); //to be implemented
+            choice = Integer.parseInt(sc.nextLine()); //needs exception handling (later)
+
+            switch (choice) {
+                case 1:
+                    new UserManagement().viewUsers(); break;
+                case 2:
+                    //                    new UserManagement().deleteUser();
+                case 0:
+                    return;
+            }
+        } while (true);
+    }
 }

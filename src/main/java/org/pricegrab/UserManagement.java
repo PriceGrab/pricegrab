@@ -118,24 +118,6 @@ public class UserManagement {
         }
     }
 
-    public void retrieveProducts() {
-        try {
-            Connection dbConnection = DBConnection.getInstance().getConnection();
-            Statement stmt = dbConnection.createStatement();
-            String query = "SELECT * FROM pricegrab";
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                //Display values
-                String row = "ID: " + rs.getInt("id") + " - Product Name: " + rs.getString("name")
-                        + " - Price: " + rs.getDouble("price") + " - Stores: " + rs.getString(
-                        "stores") + "\n";
-                System.out.print(row);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void insertFavoriteToDB(String username, ArrayList<ProductInfo> favoriteList) {
         try {
             Connection dbConnection = DBConnection.getInstance().getConnection();
@@ -151,6 +133,26 @@ public class UserManagement {
                 insertStmt.setString(6, username);
                 int rows = insertStmt.executeUpdate();
                 System.out.println("Rows affected: " + rows);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void viewUsers() {
+        System.out.println("-----------Users List-----------");
+        try {
+            Connection dbConnection = DBConnection.getInstance().getConnection();
+            Statement stmt = dbConnection.createStatement();
+            String query = "SELECT * FROM pricegrab";
+            ResultSet rs = stmt.executeQuery(query);
+            int count = 1;
+            while (rs.next()) {
+                //Display values
+                String row =
+                        "\t" + count++ + "- Username: " + rs.getString("username") + " - password: "
+                                + rs.getString("password") + "\n";
+                System.out.print(row);
             }
         } catch (SQLException e) {
             e.printStackTrace();
