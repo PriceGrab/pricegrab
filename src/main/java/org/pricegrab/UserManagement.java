@@ -1,14 +1,11 @@
 package org.pricegrab;
 
-import org.postgresql.util.PSQLException;
 import org.pricegrab.utils.DBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class UserManagement { //might wanna cancel this class and just make it for Admin
-    //to manage registered users (if we implemented Auth feature)..
-    //so the DB would be for users info & authentication purposes.
+public class UserManagement {
     private String username;
     private String password;
 

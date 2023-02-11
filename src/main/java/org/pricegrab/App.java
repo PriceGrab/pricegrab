@@ -41,10 +41,10 @@ public class App { //Code needs to get cleaned when I have time..! literally don
         do {
             System.out.println("\n-----------Admin-----------");
             System.out.println("Choose an Operation:");
-            System.out.println("\t-1- Add Product");
-            System.out.println("\t-2- Update Product");
-            System.out.println("\t-3- Remove Product");
-            System.out.println("\t-4- List All Products\n");
+            System.out.println("\t-1- Add Product"); //canceled
+            System.out.println("\t-2- Update Product"); //canceled
+            System.out.println("\t-3- Remove Product"); //canceled
+            System.out.println("\t-4- List All Products\n"); //canceled
             System.out.println("\t-9- Change User Type");
             System.out.println("\t-0- to Exit the program");
             choice = Integer.parseInt(sc.nextLine()); //needs exception handling (later)
@@ -262,6 +262,8 @@ public class App { //Code needs to get cleaned when I have time..! literally don
             if(!flag)
                 System.out.println("\n\tWrong credentials.\n\tPlease try again...");
         } while(!flag);
+
+        boolean logout = false;
         do {
             System.out.println("\n-----------Welcome to Pricegrab " + username + "-----------");
             System.out.println("\nChoose Operation:");
@@ -275,14 +277,9 @@ public class App { //Code needs to get cleaned when I have time..! literally don
             switch (choice) {
                 case 1: registerdUsersSearch(username); break;
                 case 2: viewFavoriteList(username); break;
-                case 3: break;
+                case 3: logout = true; break;
             }
-
-        } while (true);
-    }
-
-    public static void addProductToFavoriteList(ProductInfo productInfo) {
-
+        } while (!logout);
     }
 
     public static void viewFavoriteList(String username) {
