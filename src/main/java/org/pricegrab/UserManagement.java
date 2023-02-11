@@ -1,8 +1,10 @@
 package org.pricegrab;
 
+import org.postgresql.util.PSQLException;
 import org.pricegrab.utils.DBConnection;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class UserManagement { //might wanna cancel this class and just make it for Admin
     //to manage registered users (if we implemented Auth feature)..
@@ -35,8 +37,7 @@ public class UserManagement { //might wanna cancel this class and just make it f
     }
 
     // https://docs.oracle.com/javase/tutorial/jdbc/basics/array.html helpful resource for multi-values columns
-    public void addNewUser(String username, String password) {
-        try {
+    public void addNewUser(String username, String password) throws SQLException {
             Connection dbConnection = DBConnection.getInstance().getConnection();
             Statement stmt = dbConnection.createStatement();
             PreparedStatement insertStmt = dbConnection.prepareStatement(
@@ -45,9 +46,6 @@ public class UserManagement { //might wanna cancel this class and just make it f
             insertStmt.setString(2, password);
             int rows = insertStmt.executeUpdate();
             System.out.println("Rows affected: " + rows);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     public boolean validateUser(String username, String password) {
@@ -65,6 +63,24 @@ public class UserManagement { //might wanna cancel this class and just make it f
 
         } catch (SQLException e) {
             return false;
+        }
+    }
+
+    public void viewFavoriteList(String username) {
+        try {
+            Connection dbConnection = DBConnection.getInstance().getConnection();
+            Statement stmt = dbConnection.createStatement();
+            String query = "SELECT * FROM pricegrab WHERE username = ?";
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                //Display values
+                String row = "ID: " + rs.getInt("id") + " - Product Name: " + rs.getString("name")
+                        + " - Price: " + rs.getDouble("price") + " - Stores: " + rs.getString(
+                        "stores") + "\n";
+                System.out.print(row);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -114,6 +130,27 @@ public class UserManagement { //might wanna cancel this class and just make it f
                         + " - Price: " + rs.getDouble("price") + " - Stores: " + rs.getString(
                         "stores") + "\n";
                 System.out.print(row);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertFavoriteToDB(String username, ArrayList<ProductInfo> favoriteList) {
+        try {
+            Connection dbConnection = DBConnection.getInstance().getConnection();
+            Statement stmt = dbConnection.createStatement();
+            for(int i = 0; i < favoriteList.size(); i++) {
+                PreparedStatement insertStmt = dbConnection.prepareStatement(
+                        "INSERT INTO favorite_list (seller_url, seller, currency, name, price, username) VALUES (?, ?, ?, ?, ?, ?);");
+                insertStmt.setString(1, favoriteList.get(i).getSellerURL());
+                insertStmt.setString(2, favoriteList.get(i).getSeller());
+                insertStmt.setString(3, favoriteList.get(i).getCurrency());
+                insertStmt.setString(4, favoriteList.get(i).getName());
+                insertStmt.setString(5, favoriteList.get(i).getPrice());
+                insertStmt.setString(6, username);
+                int rows = insertStmt.executeUpdate();
+                System.out.println("Rows affected: " + rows);
             }
         } catch (SQLException e) {
             e.printStackTrace();

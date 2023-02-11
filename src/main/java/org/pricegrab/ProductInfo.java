@@ -1,18 +1,14 @@
 package org.pricegrab;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.net.URL;
-
 public class ProductInfo {
-    private URL sellerURL;
+    private String sellerURL;
     private String seller;
     private String currency;
     private String name;
     private String price;
 
 
-    public ProductInfo(URL sellerURL, String seller, String currency, String name,
+    public ProductInfo(String sellerURL, String seller, String currency, String name,
                        String price) {
         this.sellerURL = sellerURL;
         this.seller = seller;
@@ -21,11 +17,11 @@ public class ProductInfo {
         this.price = price;
     }
 
-    public URL getSellerURL() {
+    public String getSellerURL() {
         return sellerURL;
     }
 
-    public void setSellerURL(URL sellerURL) {
+    public void setSellerURL(String sellerURL) {
         this.sellerURL = sellerURL;
     }
 

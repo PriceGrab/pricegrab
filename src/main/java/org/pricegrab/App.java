@@ -1,5 +1,6 @@
 package org.pricegrab;
 
+import org.postgresql.util.PSQLException;
 import org.pricegrab.utils.*;
 
 
@@ -8,7 +9,7 @@ import java.sql.Array;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class App { //Code needs to get cleaned when I have time..!
+public class App { //Code needs to get cleaned when I have time..! literally don't wanna see more than 10 lines in this class!
     public static void main(String[] args) throws IOException {
         execute();
     }
@@ -184,8 +185,8 @@ public class App { //Code needs to get cleaned when I have time..!
         country = sc.nextLine();
         System.out.println();
 
-        new API("google", country,
-                searchValue);// ex. "amazon", "us", "macbook pro 2021 silver 14-inch m1 16gb ram new 512GB refurbished" more detailed search == higher accuracy results
+        new API(country,
+                searchValue).post("google");// ex. "amazon", "us", "macbook pro 2021 silver 14-inch m1 16gb ram new 512GB refurbished" more detailed search == higher accuracy results
         //fixed stores for now just to simplify things
         //the google value gives us several stores in fact, like walmart, amazon, google shopping, apple.com, adorama.com and many more...
         //the amazon value gives us several products but within amazon.com only.
@@ -204,25 +205,53 @@ public class App { //Code needs to get cleaned when I have time..!
         * at and ch on Amazon use DE marketplace with AT or CH address
          */
     }
+    public static void registerdUsersSearch(String username) throws IOException {
+        Scanner sc = new Scanner(System.in);
+        String searchValue;
+        String country;
+        System.out.println("\n-----------Search Products-----------");
+        System.out.print("Search: ");
+        searchValue = sc.nextLine();
+        System.out.println();
+        System.out.print("Country: ");
+        country = sc.nextLine();
+        System.out.println();
+
+        API api = new API();
+        api.setSearchValue(searchValue);
+        api.setCountry(country);
+        api.setUsername(username);
+        api.setLoggedInOrNot(true);
+        api.post("google");
+    }
 
     public static void registerNewUser() {
         String newUsername;
         String newPassword;
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n-----------Register New User-----------");
-        System.out.print("\nEnter New Username: ");
-        newUsername = sc.nextLine();
-        System.out.print("\nEnter New Password: ");
-        newPassword = sc.nextLine();
-        new UserManagement().addNewUser(newUsername, newPassword); //needs duplicate key values exception handling, reenter pass + username until it's unique.
+        boolean flag = true;
+        do {
+            try {
+                System.out.println("\n-----------Register New User-----------");
+                System.out.print("\nEnter New Username: ");
+                newUsername = sc.nextLine();
+                System.out.print("\nEnter New Password: ");
+                newPassword = sc.nextLine();
+                new UserManagement().addNewUser(newUsername, newPassword); //needs duplicate key values exception handling, reenter pass + username until it's unique.
+                flag = false;
+            } catch(SQLException e) {
+                System.out.println("Username already taken..\ntry again...");
+            }
+        } while(flag);
     }
 
-    public static void login() {
+    public static void login() throws IOException {
         String username;
         String password;
         boolean flag;
+        int choice;
         Scanner sc = new Scanner(System.in);
-        do {
+        do { //find a way to cancel the Login attempts, and make the user go back to just a normal visitor that uses main UI
             System.out.println("\n-----------Login-----------");
             System.out.print("\n\tEnter Username: ");
             username = sc.nextLine();
@@ -233,7 +262,31 @@ public class App { //Code needs to get cleaned when I have time..!
             if(!flag)
                 System.out.println("\n\tWrong credentials.\n\tPlease try again...");
         } while(!flag);
-        System.out.println("access granted:");
+        do {
+            System.out.println("\n-----------Welcome to Pricegrab " + username + "-----------");
+            System.out.println("\nChoose Operation:");
+            System.out.println("\t-1- Search Product");
+            System.out.println("\t-2- View favorite Basket");
+            System.out.println("\t-3- Logout\n\t :");
+
+            System.out.println("\t-0- to Exit the program");
+            choice = Integer.parseInt(sc.nextLine());
+
+            switch (choice) {
+                case 1: registerdUsersSearch(username); break;
+                case 2: viewFavoriteList(username); break;
+                case 3: break;
+            }
+
+        } while (true);
+    }
+
+    public static void addProductToFavoriteList(ProductInfo productInfo) {
 
     }
+
+    public static void viewFavoriteList(String username) {
+
+    }
+
 }

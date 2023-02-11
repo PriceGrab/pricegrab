@@ -4,41 +4,75 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.pricegrab.ProductInfo;
+import org.pricegrab.UserManagement;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URI;
-import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
 public class API {
     //just do API.post(); in main and see wassup, its gonna make you wait like 25sec after receiving the job_id before
     //  giving you the data. may say "status(working)" with no data, wait abit more. ¯\_(ツ)_/¯
 
-    private final String country;
-    private final String searchValue;
+    private String country;
+    private String searchValue;
+    private String username;
+    private boolean loggedInOrNot;
 
     public API(){
         country = "us";
         searchValue = "iphone";
     }
+    public API(String store, String country, String searchValue, String username){
+        this.country = "us";
+        this.searchValue = "iphone";
+        this.username = username;
+    }
 
-    public API(String store, String country, String searchValue) throws IOException {
+    public API(String country, String searchValue) throws IOException {
         this.country = country;
         this.searchValue = searchValue;
-        post(store);
     }
-    
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getSearchValue() {
+        return searchValue;
+    }
+
+    public void setSearchValue(String searchValue) {
+        this.searchValue = searchValue;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public boolean isLoggedInOrNot() {
+        return loggedInOrNot;
+    }
+
+    public void setLoggedInOrNot(boolean loggedInOrNot) {
+        this.loggedInOrNot = loggedInOrNot;
+    }
+
     public void post(String store) throws IOException {
         //calls for the API to gather data, then gives us a "job id" for that call, which we will use to receive the
         //  gathered data from a Get call.
@@ -142,7 +176,34 @@ public class API {
 
         printSearchResults(productInfos);
 
+        if(loggedInOrNot) {
+            System.out.println("\n-----------------------------------");
+            System.out.println("\n\t● Would you like to add a product to your favorite list? y/n");
+            Scanner sc = new Scanner(System.in);
+            String yesOrNo = sc.nextLine();
+            if (yesOrNo.equalsIgnoreCase("y"))
+                addingToFavoriteList(productInfos, sc);
+        }
     }
+    public void addingToFavoriteList(ArrayList<ProductInfo> productInfos, Scanner sc) {
+        ArrayList<Integer> productIds = new ArrayList<>();
+        String done;
+        do {
+            System.out.print("Enter product ID: ");
+            productIds.add(Integer.parseInt(sc.nextLine())-1);
+            System.out.println("Are you done adding items to your favorite list? (y) or (n)");
+            done = sc.nextLine();
+        } while(!done.equalsIgnoreCase("y"));
+        System.out.println("Items has been added to your favorite list successfully.");
+
+        ArrayList<ProductInfo> favoriteList = new ArrayList<>();
+        for (Integer productId : productIds) {
+            favoriteList.add(productInfos.get(productId));
+        }
+
+        new UserManagement().insertFavoriteToDB(username, favoriteList);
+    }
+
 
     //tests if a string can be a number/float
     public boolean isNumeric(String string) {
@@ -175,8 +236,8 @@ public class API {
     public void printSearchResults(ArrayList<ProductInfo> productInfos) {
         System.out.println("---------------Search Result--------------");
         for (int i = 0; i < productInfos.size(); i++) {
-            System.out.println(i + 1 + "- " + "Price: " + productInfos.get(i).getPrice()+
-                    " -> " + productInfos.get(i).getName() +" "+ productInfos.get(i).getSellerURL());
+            System.out.println(i + 1 + "- " + "Price: " + productInfos.get(i).getPrice() + " " + productInfos.get(i).getCurrency() +
+                    " -> " + productInfos.get(i).getName() +" -> "+ productInfos.get(i).getSellerURL());
         }
     }
 
@@ -203,6 +264,6 @@ record JobOffers(@JsonProperty("offers_count") int offersCount, List<JobOffer> o
 
 record JobOffer(@JsonProperty("review_count") Integer reviewCount,
                 @JsonProperty("review_rating") Double reviewRating,
-                @JsonProperty("seller_url") URL sellerUrl, String seller, String condition,
-                int shipping, String currency, String price, URL url, String name) {
+                @JsonProperty("seller_url") String sellerUrl, String seller, String condition,
+                int shipping, String currency, String price, String url, String name) {
 }
