@@ -24,8 +24,7 @@ public class App { //Code needs to get cleaned when I have time..! literally don
                     ">>Choose access type:\n\tPress -1- for Admin Access\n\tPress -2- for Visitor Access\n\tPress -0- to Exit the program");
             choice = Integer.parseInt(sc.nextLine()); //needs exception handling (later)
             if (choice == 1) {
-                admin();
-                break;
+                new Admin().run();
             } else if (choice == 2) {
                 visitor();
                 break;
@@ -34,110 +33,6 @@ public class App { //Code needs to get cleaned when I have time..! literally don
         } while (true);
     }
 
-    public static void admin() throws IOException {
-        Scanner sc = new Scanner(System.in);
-        int choice;
-
-        do {
-            System.out.println("\n-----------Admin-----------");
-            System.out.println("Choose an Operation:");
-            System.out.println("\t-1- Add Product"); //canceled
-            System.out.println("\t-2- Update Product"); //canceled
-            System.out.println("\t-3- Remove Product"); //canceled
-            System.out.println("\t-4- List All Products\n"); //canceled
-            System.out.println("\t-9- Change User Type");
-            System.out.println("\t-0- to Exit the program");
-            choice = Integer.parseInt(sc.nextLine()); //needs exception handling (later)
-
-            switch (choice) {
-                case 1:
-                    insertProduct();
-                    break;
-                case 2:
-                    updateProduct();
-                    break;
-                case 3:
-                    deleteProduct();
-                    break;
-                case 4:
-                    System.out.println("SS");
-                case 9:
-                    execute();
-                    break;
-            }
-            if (choice == 0)
-                System.exit(0);
-        } while (true);
-    }
-
-    public static void insertProduct() {
-        Scanner sc = new Scanner(System.in);
-        String name;
-        double price;
-        String stores;
-        String[] storesArray;
-
-        System.out.println("\n-----------Adding Product-----------");
-        System.out.print("Product Name: ");
-        name = sc.nextLine();
-        System.out.print("Product Price: ");
-        price = Double.parseDouble(sc.nextLine());
-        System.out.print("Stores: "); //must separate each store with only a single space..
-        stores = sc.nextLine();
-        storesArray = stores.split(" ");
-
-        try {
-            DBConnection db = DBConnection.getInstance();
-
-            Array anArray = db.getConnection().createArrayOf("text", storesArray);
-
-//            UserManagement product = new UserManagement(name, price, anArray);
-//            product.insertProduct();
-            // Retrieve all tasks
-//            product.retrieveProducts();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void updateProduct() {
-        Scanner sc = new Scanner(System.in);
-        int id;
-        String name;
-        double price;
-        String stores;
-        String[] storesArray;
-
-        System.out.println("\n-----------Updating Product-----------");
-        System.out.print("Product ID: ");
-        id = Integer.parseInt(sc.nextLine());
-        System.out.print("New Name: ");
-        name = sc.nextLine();
-        System.out.print("New Price: ");
-        price = Double.parseDouble(sc.nextLine());
-        System.out.print("New Stores: "); //must separate each store with only a single space..
-        stores = sc.nextLine();
-        storesArray = stores.split(" ");
-
-        UserManagement product = new UserManagement();
-        product.updateProduct(id, name, price, storesArray);
-        // Retrieve all tasks
-        product.retrieveProducts();
-    }
-
-    public static void deleteProduct() {
-        Scanner sc = new Scanner(System.in);
-        int id;
-
-        System.out.println("\n-----------Delete Product-----------");
-        System.out.print("Product ID: ");
-        id = Integer.parseInt(sc.nextLine());
-
-        UserManagement product = new UserManagement();
-        product.deleteProduct(id);
-        // Retrieve all tasks
-        product.retrieveProducts();
-    }
 
     public static void visitor() throws IOException {
         Scanner sc = new Scanner(System.in);
