@@ -7,31 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserManagement {
-    private String username;
-    private String password;
-
     public UserManagement() {
-    }
-
-    public UserManagement(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     // https://docs.oracle.com/javase/tutorial/jdbc/basics/array.html helpful resource for multi-values columns
@@ -98,11 +74,11 @@ public class UserManagement {
             for (int i = 0; i < favoriteList.size(); i++) {
                 PreparedStatement insertStmt = dbConnection.prepareStatement(
                         "INSERT INTO favorite_list (seller_url, seller, currency, name, price, username) VALUES (?, ?, ?, ?, ?, ?);");
-                insertStmt.setString(1, favoriteList.get(i).getSellerURL());
-                insertStmt.setString(2, favoriteList.get(i).getSeller());
-                insertStmt.setString(3, favoriteList.get(i).getCurrency());
-                insertStmt.setString(4, favoriteList.get(i).getName());
-                insertStmt.setString(5, favoriteList.get(i).getPrice());
+                insertStmt.setString(1, favoriteList.get(i).sellerURL());
+                insertStmt.setString(2, favoriteList.get(i).seller());
+                insertStmt.setString(3, favoriteList.get(i).currency());
+                insertStmt.setString(4, favoriteList.get(i).name());
+                insertStmt.setString(5, favoriteList.get(i).price());
                 insertStmt.setString(6, username);
                 int rows = insertStmt.executeUpdate();
                 System.out.println("Rows affected: " + rows);

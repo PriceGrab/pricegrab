@@ -13,27 +13,19 @@ public class Admin {
         do {
             System.out.println("\n-----------Admin-----------");
             System.out.println("Choose an Operation:");
-            System.out.println("\t-1- Manage Registered Users\n"); //to be implemented
+            System.out.println("\t-1- Manage Registered Users\n");
             System.out.println("\t-9- Change User Type");
             System.out.println("\t-0- to Exit the program");
             try {
                 choice = Integer.parseInt(sc.nextLine());
             }
             catch(NumberFormatException nfe){
-                System.out.println("Please enter a number from the chioces above.");
+                System.out.println("Please enter a number from the choices above.");
                 continue;
             }
             switch (choice) {
                 case 1:
-                    manageRegisteredUsers();
-                case 2:
-                    //                    updateProduct();
-                    break;
-                case 3:
-                    //                    deleteProduct();
-                    break;
-                case 4:
-                    //                    System.out.println("SS");
+                    manageRegisteredUsers(); break;
                 case 9:
                     return;
             }
@@ -42,20 +34,17 @@ public class Admin {
         } while (true);
     }
 
-    /*
-
-     */
-
     public void manageRegisteredUsers() {
         Scanner sc = new Scanner(System.in);
         int choice;
         String username;
+        boolean backToAdminOperations = false;
         do {
             System.out.println("\n-----------Managing Users-----------");
             System.out.println("Choose an Operation:");
             System.out.println("\t-1- View list of Users");
-            System.out.println("\t-2- Delete User\n"); //to be implemented
-            System.out.println("\t-0- Back to Admin Operations"); //to be implemented
+            System.out.println("\t-2- Delete User\n");
+            System.out.println("\t-0- Back to Admin Operations");
             try{
             choice = Integer.parseInt(sc.nextLine());
             }

@@ -18,22 +18,14 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class API {
-    //just do API.post(); in main and see wassup, its gonna make you wait like 25sec after receiving the job_id before
-    //  giving you the data. may say "status(working)" with no data, wait abit more. ¯\_(ツ)_/¯
-
     private String country;
     private String searchValue;
     private String username;
     private boolean loggedInOrNot;
 
-    public API(){
+    public API() {
         country = "us";
         searchValue = "iphone";
-    }
-    public API(String store, String country, String searchValue, String username){
-        this.country = "us";
-        this.searchValue = "iphone";
-        this.username = username;
     }
 
     public API(String country, String searchValue) throws IOException {
@@ -41,32 +33,18 @@ public class API {
         this.searchValue = searchValue;
     }
 
-    public String getCountry() {
-        return country;
-    }
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public String getSearchValue() {
-        return searchValue;
     }
 
     public void setSearchValue(String searchValue) {
         this.searchValue = searchValue;
     }
 
-    public String getUsername() {
-        return username;
-    }
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public boolean isLoggedInOrNot() {
-        return loggedInOrNot;
     }
 
     public void setLoggedInOrNot(boolean loggedInOrNot) {
@@ -116,10 +94,10 @@ public class API {
         do {
             //if we call Get and its still on "Working" status, itll loop around and wait abit before calling again.
             try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://price-analytics.p.rapidapi.com/poll-job/" + jobid))
                     .header("X-RapidAPI-Key", "86f79dead5mshdd5051a62609c27p10e6c0jsnb915eee2251c")
@@ -145,9 +123,9 @@ public class API {
                     System.out.println(e.getMessage());
                 }
             }
-            if(count > 0)
+            if (count > 0)
                 System.out.println("almost there!...");
-            count =+ 1;
+            count = +1;
         } while (response.body().startsWith("working", 11));
 
         ObjectMapper mapper = new ObjectMapper();
@@ -170,13 +148,14 @@ public class API {
         Collections.sort(productInfos, new Comparator<ProductInfo>() {
             @Override
             public int compare(ProductInfo o1, ProductInfo o2) {
-                return Float.valueOf(Float.parseFloat(o1.getPrice())).compareTo(Float.parseFloat(o2.getPrice()));
+                return Float.valueOf(Float.parseFloat(o1.price()))
+                        .compareTo(Float.parseFloat(o2.price()));
             }
         });
 
         printSearchResults(productInfos);
 
-        if(loggedInOrNot) {
+        if (loggedInOrNot) {
             System.out.println("\n-----------------------------------");
             System.out.println("\n\t● Would you like to add a product to your favorite list? y/n");
             Scanner sc = new Scanner(System.in);
@@ -185,15 +164,16 @@ public class API {
                 addingToFavoriteList(productInfos, sc);
         }
     }
+
     public void addingToFavoriteList(ArrayList<ProductInfo> productInfos, Scanner sc) {
         ArrayList<Integer> productIds = new ArrayList<>();
         String done;
         do {
             System.out.print("Enter product ID: ");
-            productIds.add(Integer.parseInt(sc.nextLine())-1);
+            productIds.add(Integer.parseInt(sc.nextLine()) - 1);
             System.out.println("Are you done adding items to your favorite list? (y) or (n)");
             done = sc.nextLine();
-        } while(!done.equalsIgnoreCase("y"));
+        } while (!done.equalsIgnoreCase("y"));
         System.out.println("Items has been added to your favorite list successfully.");
 
         ArrayList<ProductInfo> favoriteList = new ArrayList<>();
@@ -209,7 +189,7 @@ public class API {
     public boolean isNumeric(String string) {
         float intValue;
 
-        if(string == null || string.equals("")) {
+        if (string == null || string.equals("")) {
             return false;
         }
 
@@ -223,11 +203,11 @@ public class API {
     }
 
     //removes string prices
-    public void removeStringPrices(ArrayList<ProductInfo> productInfos){
+    public void removeStringPrices(ArrayList<ProductInfo> productInfos) {
         for (int i = 0; i < productInfos.size(); i++) {
-            if(productInfos.get(i).getPrice()==null || !(isNumeric(productInfos.get(i).getPrice()))) {
+            if (productInfos.get(i).price() == null || !(isNumeric(productInfos.get(i).price()))) {
                 productInfos.remove(i);
-                i=-1;
+                i = -1;
             }
         }
 
@@ -236,11 +216,12 @@ public class API {
     public void printSearchResults(ArrayList<ProductInfo> productInfos) {
         System.out.println("---------------Search Result--------------");
         for (int i = 0; i < productInfos.size(); i++) {
-            System.out.println(i + 1 + "- " + "Price: " + productInfos.get(i).getPrice() + " " + productInfos.get(i).getCurrency() +
-                    " -> " + productInfos.get(i).getName() +" -> "+ productInfos.get(i).getSellerURL());
+            System.out.println(
+                    i + 1 + "- " + "Price: " + productInfos.get(i).price() + " " + productInfos.get(
+                            i).currency() + " -> " + productInfos.get(i).name() + " -> "
+                            + productInfos.get(i).sellerURL());
         }
     }
-
 }
 
 

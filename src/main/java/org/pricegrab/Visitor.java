@@ -1,20 +1,18 @@
 package org.pricegrab;
 
-import org.postgresql.util.PSQLException;
 import org.pricegrab.utils.*;
 
-
 import java.io.IOException;
-import java.sql.Array;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Visitor {
+    Scanner sc = new Scanner(System.in);
+
     public Visitor() {
     }
 
     public void run() throws IOException {
-        Scanner sc = new Scanner(System.in);
         int choice;
 
         do {
@@ -26,10 +24,9 @@ public class Visitor {
 
             System.out.println("\t-9- Change User Type");
             System.out.println("\t-0- to Exit the program");
-            try{
-            choice = Integer.parseInt(sc.nextLine());
-            }
-            catch(NumberFormatException nfe){
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException nfe) {
                 System.out.println("\nPlease enter a number from the choices provided.");
                 continue;
             }
@@ -52,7 +49,6 @@ public class Visitor {
     }
 
     public void visitorSearch() throws IOException {
-        Scanner sc = new Scanner(System.in);
         String searchValue;
         String country;
         System.out.println("\n-----------Search Products-----------");
@@ -85,7 +81,6 @@ public class Visitor {
     }
 
     public void registerdUsersSearch(String username) throws IOException {
-        Scanner sc = new Scanner(System.in);
         String searchValue;
         String country;
         System.out.println("\n-----------Search Products-----------");
@@ -107,7 +102,6 @@ public class Visitor {
     public void registerNewUser() {
         String newUsername;
         String newPassword;
-        Scanner sc = new Scanner(System.in);
         boolean flag = true;
         do {
             try {
@@ -117,7 +111,7 @@ public class Visitor {
                 System.out.print("\nEnter New Password: ");
                 newPassword = sc.nextLine();
                 new UserManagement().addNewUser(newUsername,
-                        newPassword); //needs duplicate key values exception handling, reenter pass + username until it's unique.
+                        newPassword); //needs -> duplicate key values exception handling, reenter pass + username until it's unique.
                 flag = false;
             } catch (SQLException e) {
                 System.out.println("Username already taken..\ntry again...");
@@ -130,17 +124,15 @@ public class Visitor {
         String password;
         boolean flag;
         int choice;
-        Scanner sc = new Scanner(System.in);
         do
-        { //find a way to cancel the Login attempts, and make the user go back to just a normal visitor that uses main UI
+        { //needs cleaning -> cancel the Login attempts, and make the user go back to just a normal visitor that uses main UI
             System.out.println("\n-----------Login-----------");
             System.out.print("\n\tEnter Username: ");
             username = sc.nextLine();
             System.out.print("\tEnter Password: ");
             password = sc.nextLine();
 
-            flag = new UserManagement().validateUser(username,
-                    password); //needs duplicate key values exception handling, reenter pass + username until it's unique.
+            flag = new UserManagement().validateUser(username, password);
             if (!flag)
                 System.out.println("\n\tWrong credentials.\n\tPlease try again...");
         } while (!flag);
@@ -154,10 +146,9 @@ public class Visitor {
             System.out.println("\t-3- Logout\n\t :");
 
             System.out.println("\t-0- to Exit the program");
-            try{
-            choice = Integer.parseInt(sc.nextLine());
-            }
-            catch(NumberFormatException nfe){
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException nfe) {
                 System.out.println("\nPlease enter a number from the choices provided.");
                 continue;
             }

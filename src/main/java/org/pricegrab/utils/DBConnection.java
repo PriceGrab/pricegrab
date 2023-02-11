@@ -6,17 +6,14 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class DBConnection {
-    private final String url;
-    private final int port;
-    private final String dbName;
-    private Connection connection;
+    private final Connection connection;
 
     private static DBConnection instance;
 
     private DBConnection() throws SQLException {
-        this.dbName = "pricegrab";
-        this.port = 5432;
-        this.url = "jdbc:postgresql://localhost:" + Integer.toString(this.port) + "/" + this.dbName;
+        String dbName = "pricegrab";
+        int port = 5432;
+        String url = "jdbc:postgresql://localhost:" + port + "/" + dbName;
         Properties props = new Properties();
         props.setProperty("user", System.getenv("DB_USER"));
         props.setProperty("password", System.getenv("DB_PASS"));
