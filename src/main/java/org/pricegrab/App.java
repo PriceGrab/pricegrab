@@ -266,7 +266,7 @@ public class App { //Code needs to get cleaned when I have time..! literally don
             System.out.println("\n-----------Welcome to Pricegrab " + username + "-----------");
             System.out.println("\nChoose Operation:");
             System.out.println("\t-1- Search Product");
-            System.out.println("\t-2- View favorite Basket");
+            System.out.println("\t-2- View favorite list");
             System.out.println("\t-3- Logout\n\t :");
 
             System.out.println("\t-0- to Exit the program");
@@ -286,7 +286,6 @@ public class App { //Code needs to get cleaned when I have time..! literally don
     }
 
     public static void viewFavoriteList(String username) {
-
+        new UserManagement().viewFavoriteList(username);
     }
-
 }

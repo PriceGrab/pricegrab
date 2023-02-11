@@ -38,22 +38,22 @@ public class UserManagement { //might wanna cancel this class and just make it f
 
     // https://docs.oracle.com/javase/tutorial/jdbc/basics/array.html helpful resource for multi-values columns
     public void addNewUser(String username, String password) throws SQLException {
-            Connection dbConnection = DBConnection.getInstance().getConnection();
-            Statement stmt = dbConnection.createStatement();
-            PreparedStatement insertStmt = dbConnection.prepareStatement(
-                    "INSERT INTO pricegrab (username, password) VALUES (?, ?);");
-            insertStmt.setString(1, username);
-            insertStmt.setString(2, password);
-            int rows = insertStmt.executeUpdate();
-            System.out.println("Rows affected: " + rows);
+        Connection dbConnection = DBConnection.getInstance().getConnection();
+        Statement stmt = dbConnection.createStatement();
+        PreparedStatement insertStmt = dbConnection.prepareStatement(
+                "INSERT INTO pricegrab (username, password) VALUES (?, ?);");
+        insertStmt.setString(1, username);
+        insertStmt.setString(2, password);
+        int rows = insertStmt.executeUpdate();
+        System.out.println("Rows affected: " + rows);
     }
 
     public boolean validateUser(String username, String password) {
         try {
             Connection dbConnection = DBConnection.getInstance().getConnection();
             Statement stmt = dbConnection.createStatement();
-            PreparedStatement validatestmt = dbConnection.prepareStatement(
-                    "SELECT * FROM pricegrab WHERE username = ?");
+            PreparedStatement validatestmt =
+                    dbConnection.prepareStatement("SELECT * FROM pricegrab WHERE username = ?");
             validatestmt.setString(1, username);
             ResultSet resultSet = validatestmt.executeQuery();
             resultSet.next();
@@ -70,14 +70,17 @@ public class UserManagement { //might wanna cancel this class and just make it f
         try {
             Connection dbConnection = DBConnection.getInstance().getConnection();
             Statement stmt = dbConnection.createStatement();
-            String query = "SELECT * FROM pricegrab WHERE username = ?";
-            ResultSet rs = stmt.executeQuery(query);
+            PreparedStatement viewFavListStmt =
+                    dbConnection.prepareStatement("SELECT * FROM favorite_list WHERE username = ?");
+            viewFavListStmt.setString(1, username);
+            ResultSet rs = viewFavListStmt.executeQuery();
+            int count = 1;
             while (rs.next()) {
-                //Display values
-                String row = "ID: " + rs.getInt("id") + " - Product Name: " + rs.getString("name")
-                        + " - Price: " + rs.getDouble("price") + " - Stores: " + rs.getString(
-                        "stores") + "\n";
-                System.out.print(row);
+                System.out.print(count++ + "- ");
+                String row = "Product Name: " + rs.getString("name") + " -> Product price: "
+                        + rs.getString("price") + " " + rs.getString("currency")
+                        + " -> Seller URL: " + rs.getString("seller_url");
+                System.out.println(row + "\n");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -140,7 +143,7 @@ public class UserManagement { //might wanna cancel this class and just make it f
         try {
             Connection dbConnection = DBConnection.getInstance().getConnection();
             Statement stmt = dbConnection.createStatement();
-            for(int i = 0; i < favoriteList.size(); i++) {
+            for (int i = 0; i < favoriteList.size(); i++) {
                 PreparedStatement insertStmt = dbConnection.prepareStatement(
                         "INSERT INTO favorite_list (seller_url, seller, currency, name, price, username) VALUES (?, ?, ?, ?, ?, ?);");
                 insertStmt.setString(1, favoriteList.get(i).getSellerURL());
