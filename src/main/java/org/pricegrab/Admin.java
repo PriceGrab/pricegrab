@@ -37,22 +37,31 @@ public class Admin {
         } while (true);
     }
 
+    /*
+
+     */
+
     public void manageRegisteredUsers() {
         Scanner sc = new Scanner(System.in);
         int choice;
+        String username;
         do {
             System.out.println("\n-----------Managing Users-----------");
             System.out.println("Choose an Operation:");
             System.out.println("\t-1- View list of Users");
             System.out.println("\t-2- Delete User\n"); //to be implemented
-            System.out.println("\t-0- Admin Operations"); //to be implemented
+            System.out.println("\t-0- Back to Admin Operations"); //to be implemented
             choice = Integer.parseInt(sc.nextLine()); //needs exception handling (later)
 
             switch (choice) {
                 case 1:
-                    new UserManagement().viewUsers(); break;
+                    new UserManagement().viewUsers();
+                    break;
                 case 2:
-                    //                    new UserManagement().deleteUser();
+                    System.out.println("Enter Username to delete:");
+                    username = sc.nextLine();
+                    new UserManagement().deleteUsers(username);
+                    break;
                 case 0:
                     return;
             }

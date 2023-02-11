@@ -4,6 +4,7 @@ import org.pricegrab.utils.DBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class UserManagement {
     private String username;
@@ -64,6 +65,7 @@ public class UserManagement {
     }
 
     public void viewFavoriteList(String username) {
+        Scanner sc = new Scanner(System.in);
         try {
             Connection dbConnection = DBConnection.getInstance().getConnection();
             Statement stmt = dbConnection.createStatement();
@@ -71,6 +73,10 @@ public class UserManagement {
                     dbConnection.prepareStatement("SELECT * FROM favorite_list WHERE username = ?");
             viewFavListStmt.setString(1, username);
             ResultSet rs = viewFavListStmt.executeQuery();
+            if (!rs.isBeforeFirst()) { //this returns false if the cursor is not before the first record or if there are no rows in the ResultSet.
+                System.out.println("Favorite list is Empty.");
+                return;
+            }
             int count = 1;
             while (rs.next()) {
                 System.out.print(count++ + "- ");
@@ -84,39 +90,6 @@ public class UserManagement {
         }
     }
 
-
-    public void updateProduct(int id, String updateProductName, double price, String[] stores) {
-        try {
-            Connection dbConnection = DBConnection.getInstance().getConnection();
-            Statement stmt = dbConnection.createStatement();
-            PreparedStatement updateStmt = dbConnection.prepareStatement(
-                    "UPDATE pricegrab SET name = ?, price = ?, stores = ? WHERE id = ?");
-            updateStmt.setString(1, updateProductName);
-            updateStmt.setDouble(2, price);
-            Array anArray =
-                    dbConnection.createArrayOf("text", stores); //create array objects of stores
-            updateStmt.setArray(3, anArray);
-            updateStmt.setInt(4, id);
-            int row = updateStmt.executeUpdate();
-            System.out.println("Rows updated: " + row);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void deleteProduct(int id) {
-        try {
-            Connection dbConnection = DBConnection.getInstance().getConnection();
-            Statement stmt = dbConnection.createStatement();
-            PreparedStatement deleteStmt =
-                    dbConnection.prepareStatement("DELETE FROM pricegrab WHERE id = ?");
-            deleteStmt.setInt(1, id);
-            int row = deleteStmt.executeUpdate();
-            System.out.println("Rows updated: " + row);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void insertFavoriteToDB(String username, ArrayList<ProductInfo> favoriteList) {
         try {
@@ -154,6 +127,27 @@ public class UserManagement {
                                 + rs.getString("password") + "\n";
                 System.out.print(row);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteUsers(String username) {
+        try {
+            Connection dbConnection = DBConnection.getInstance().getConnection();
+            Statement stmt = dbConnection.createStatement();
+
+            PreparedStatement deleteFavList =
+                    dbConnection.prepareStatement("DELETE FROM favorite_list WHERE username = ?");
+            deleteFavList.setString(1, username);
+            deleteFavList.executeUpdate();
+
+            PreparedStatement deleteStmt =
+                    dbConnection.prepareStatement("DELETE FROM pricegrab WHERE username = ?");
+            deleteStmt.setString(1, username);
+            int row = deleteStmt.executeUpdate();
+            System.out.println("Account name " + username + " has been deactivated");
+            System.out.println("Rows updated: " + row);
         } catch (SQLException e) {
             e.printStackTrace();
         }
