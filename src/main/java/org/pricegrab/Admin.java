@@ -16,8 +16,13 @@ public class Admin {
             System.out.println("\t-1- Manage Registered Users\n"); //to be implemented
             System.out.println("\t-9- Change User Type");
             System.out.println("\t-0- to Exit the program");
-            choice = Integer.parseInt(sc.nextLine()); //needs exception handling (later)
-
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+            }
+            catch(NumberFormatException nfe){
+                System.out.println("Please enter a number from the chioces above.");
+                continue;
+            }
             switch (choice) {
                 case 1:
                     manageRegisteredUsers();
@@ -51,8 +56,13 @@ public class Admin {
             System.out.println("\t-1- View list of Users");
             System.out.println("\t-2- Delete User\n"); //to be implemented
             System.out.println("\t-0- Back to Admin Operations"); //to be implemented
-            choice = Integer.parseInt(sc.nextLine()); //needs exception handling (later)
-
+            try{
+            choice = Integer.parseInt(sc.nextLine());
+            }
+            catch(NumberFormatException nfe){
+                System.out.println("\nPlease enter a Number from the choices provided.");
+                continue;
+            }
             switch (choice) {
                 case 1:
                     new UserManagement().viewUsers();

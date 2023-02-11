@@ -16,7 +16,13 @@ public class App {
             System.out.println("\n-----------Welcome to pricegrab-----------");
             System.out.println(
                     ">>Choose access type:\n\tPress -1- for Admin Access\n\tPress -2- for Visitor Access\n\tPress -0- to Exit the program");
+            try{
             choice = Integer.parseInt(sc.nextLine());
+            }
+            catch(NumberFormatException nfe){
+                System.out.println("\nPlease enter a Number from the choices provided.");
+                continue;
+            }
             if (choice == 1) {
                 new Admin().run();
             } else if (choice == 2) {

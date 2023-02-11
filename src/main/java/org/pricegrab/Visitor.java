@@ -26,8 +26,13 @@ public class Visitor {
 
             System.out.println("\t-9- Change User Type");
             System.out.println("\t-0- to Exit the program");
-
-            choice = Integer.parseInt(sc.nextLine()); //needs exception handling (later)
+            try{
+            choice = Integer.parseInt(sc.nextLine());
+            }
+            catch(NumberFormatException nfe){
+                System.out.println("\nPlease enter a number from the choices provided.");
+                continue;
+            }
             switch (choice) {
                 case 1:
                     visitorSearch();
@@ -149,8 +154,13 @@ public class Visitor {
             System.out.println("\t-3- Logout\n\t :");
 
             System.out.println("\t-0- to Exit the program");
+            try{
             choice = Integer.parseInt(sc.nextLine());
-
+            }
+            catch(NumberFormatException nfe){
+                System.out.println("\nPlease enter a number from the choices provided.");
+                continue;
+            }
             switch (choice) {
                 case 1:
                     registerdUsersSearch(username);
