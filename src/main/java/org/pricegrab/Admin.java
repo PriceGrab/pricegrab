@@ -38,7 +38,7 @@ public class Admin {
         Scanner sc = new Scanner(System.in);
         int choice;
         String username;
-        boolean backToAdminOperations = false;
+        boolean backToAdminOperations = false; //delete this
         do {
             System.out.println("\n-----------Managing Users-----------");
             System.out.println("Choose an Operation:");
