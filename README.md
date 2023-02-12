@@ -1,4 +1,4 @@
-![](Images/pricegrab-logo-512.png)
+![](Images/pricegrab-logo-256.png)
 
 
 
