@@ -78,7 +78,7 @@ public class Visitor {
          */
     }
 
-    public void registerdUsersSearch(String username) throws IOException {
+    public void registeredUsersSearch(String username) throws IOException {
         String searchValue;
         String country;
         System.out.print("\n-----------Search Products-----------\n"
@@ -151,7 +151,7 @@ public class Visitor {
             }
             switch (choice) {
                 case 1:
-                    registerdUsersSearch(username);
+                    registeredUsersSearch(username);
                     break;
                 case 2:
                     viewFavoriteList(username);

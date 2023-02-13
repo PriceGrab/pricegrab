@@ -4,16 +4,11 @@ import org.pricegrab.utils.DBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class UserManagement {
-    public UserManagement() {
-    }
-
     // https://docs.oracle.com/javase/tutorial/jdbc/basics/array.html helpful resource for multi-values columns
     public void addNewUser(String username, String password) throws SQLException {
         Connection dbConnection = DBConnection.getInstance().getConnection();
-        Statement stmt = dbConnection.createStatement();
         PreparedStatement insertStmt = dbConnection.prepareStatement(
                 "INSERT INTO pricegrab (username, password) VALUES (?, ?);");
         insertStmt.setString(1, username);
@@ -25,11 +20,10 @@ public class UserManagement {
     public boolean validateUser(String username, String password) {
         try {
             Connection dbConnection = DBConnection.getInstance().getConnection();
-            Statement stmt = dbConnection.createStatement();
-            PreparedStatement validatestmt =
+            PreparedStatement validateStmt =
                     dbConnection.prepareStatement("SELECT * FROM pricegrab WHERE username = ?");
-            validatestmt.setString(1, username);
-            ResultSet resultSet = validatestmt.executeQuery();
+            validateStmt.setString(1, username);
+            ResultSet resultSet = validateStmt.executeQuery();
             resultSet.next();
 
             String tablePass = resultSet.getString(2);
@@ -41,15 +35,13 @@ public class UserManagement {
     }
 
     public void viewFavoriteList(String username) {
-        Scanner sc = new Scanner(System.in);
         try {
             Connection dbConnection = DBConnection.getInstance().getConnection();
-            Statement stmt = dbConnection.createStatement();
             PreparedStatement viewFavListStmt =
                     dbConnection.prepareStatement("SELECT * FROM favorite_list WHERE username = ?");
             viewFavListStmt.setString(1, username);
             ResultSet rs = viewFavListStmt.executeQuery();
-            if (!rs.isBeforeFirst()) { //this returns false if the cursor is not before the first record or if there are no rows in the ResultSet.
+            if (!rs.isBeforeFirst()) { //Returns false if there are no rows in the ResultSet. Or if the cursor is not before the first record
                 System.out.println("Favorite list is Empty.");
                 return;
             }
@@ -70,15 +62,14 @@ public class UserManagement {
     public void insertFavoriteToDB(String username, ArrayList<ProductInfo> favoriteList) {
         try {
             Connection dbConnection = DBConnection.getInstance().getConnection();
-            Statement stmt = dbConnection.createStatement();
-            for (int i = 0; i < favoriteList.size(); i++) {
-                PreparedStatement insertStmt = dbConnection.prepareStatement(
-                        "INSERT INTO favorite_list (seller_url, seller, currency, name, price, username) VALUES (?, ?, ?, ?, ?, ?);");
-                insertStmt.setString(1, favoriteList.get(i).sellerURL());
-                insertStmt.setString(2, favoriteList.get(i).seller());
-                insertStmt.setString(3, favoriteList.get(i).currency());
-                insertStmt.setString(4, favoriteList.get(i).name());
-                insertStmt.setString(5, favoriteList.get(i).price());
+            PreparedStatement insertStmt = dbConnection.prepareStatement(
+                    "INSERT INTO favorite_list (seller_url, seller, currency, name, price, username) VALUES (?, ?, ?, ?, ?, ?);");
+            for (ProductInfo productInfo : favoriteList) {
+                insertStmt.setString(1, productInfo.sellerURL());
+                insertStmt.setString(2, productInfo.seller());
+                insertStmt.setString(3, productInfo.currency());
+                insertStmt.setString(4, productInfo.name());
+                insertStmt.setString(5, productInfo.price());
                 insertStmt.setString(6, username);
                 int rows = insertStmt.executeUpdate();
                 System.out.println("Rows affected: " + rows);
@@ -111,8 +102,6 @@ public class UserManagement {
     public void deleteUsers(String username) {
         try {
             Connection dbConnection = DBConnection.getInstance().getConnection();
-            Statement stmt = dbConnection.createStatement();
-
             PreparedStatement deleteFavList =
                     dbConnection.prepareStatement("DELETE FROM favorite_list WHERE username = ?");
             deleteFavList.setString(1, username);
