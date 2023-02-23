@@ -56,7 +56,7 @@ public class API {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://price-analytics.p.rapidapi.com/search-by-term"))
                 .header("content-type", "application/x-www-form-urlencoded")
-                .header("X-RapidAPI-Key", "d366a00dd9mshb2815bd04b4cc8ep108e2fjsne8b23608c808")
+                .header("X-RapidAPI-Key", System.getenv("API_KEY"))
                 .header("X-RapidAPI-Host", "price-analytics.p.rapidapi.com")
                 .method("POST", HttpRequest.BodyPublishers.ofString(
                         "source=" + store + "&country=" + country + "&values=" + searchValue))

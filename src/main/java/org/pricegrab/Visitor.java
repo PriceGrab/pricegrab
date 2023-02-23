@@ -121,8 +121,8 @@ public class Visitor {
         String password;
         boolean flag;
         int choice;
-        do
-        { //needs cleaning -> cancel the Login attempts, and make the user go back to just a normal visitor that uses main UI
+
+        do { //needs cleaning -> cancel the Login attempts, and make the user go back to just a normal visitor that uses main UI
             System.out.println("\n-----------Login-----------");
             System.out.print("\n\tEnter Username: ");
             username = sc.nextLine();
