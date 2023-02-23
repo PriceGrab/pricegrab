@@ -1,12 +1,11 @@
 package org.pricegrab;
-
 import java.util.Scanner;
 
 public class Admin {
     public Admin() {
     }
 
-    public void run() {
+    public int run() {
         Scanner sc = new Scanner(System.in);
         int choice;
 
@@ -27,10 +26,11 @@ public class Admin {
                 case 1:
                     manageRegisteredUsers(); break;
                 case 9:
-                    return;
+                    return 9;
+                case 0:
+                    return 0;
             }
-            if (choice == 0)
-                System.exit(0);
+
         } while (true);
     }
 

@@ -2,6 +2,9 @@ package org.pricegrab;
 
 import org.pricegrab.utils.DBConnection;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -87,12 +90,17 @@ public class UserManagement {
             String query = "SELECT * FROM pricegrab";
             ResultSet rs = stmt.executeQuery(query);
             int count = 1;
-            while (rs.next()) {
-                //Display values
-                String row =
-                        "\t" + count++ + "- Username: " + rs.getString("username") + " - password: "
-                                + rs.getString("password") + "\n";
-                System.out.print(row);
+            try(PrintWriter printWriter = new PrintWriter(
+                    "src/main/java/org/pricegrab/viewRegisteredUsersList.txt")) {
+                while (rs.next()) {
+                    //Display values
+                    String row =
+                            "\t" + count++ + "- Username: " + rs.getString("username") + " - password: "
+                                    + rs.getString("password") + "\n";
+                    printWriter.print(row);
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
         } catch (SQLException e) {
             e.printStackTrace();

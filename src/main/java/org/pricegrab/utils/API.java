@@ -6,8 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.pricegrab.ProductInfo;
 import org.pricegrab.UserManagement;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -25,7 +24,7 @@ public class API {
 
     public API() {
         country = "us";
-        searchValue = "iphone";
+        searchValue = "shampoo";
     }
 
     public API(String country, String searchValue) {
@@ -77,7 +76,6 @@ public class API {
             get(response.body().substring(25, 49));
         } else {
             System.out.println("an error occurred");
-            System.exit(0);
         }
     }
 
@@ -123,9 +121,6 @@ public class API {
                     System.out.println(e.getMessage());
                 }
             }
-            if (count > 0)
-                System.out.println("almost there!...");
-            count = +1;
         } while (response.body().startsWith("working", 11));
 
         ObjectMapper mapper = new ObjectMapper();
@@ -214,13 +209,19 @@ public class API {
     }
 
     public void printSearchResults(ArrayList<ProductInfo> productInfos) {
-        System.out.println("---------------Search Result--------------");
-        for (int i = 0; i < productInfos.size(); i++) {
-            System.out.println(
-                    i + 1 + "- " + "Price: " + productInfos.get(i).price() + " " + productInfos.get(
-                            i).currency() + " -> " + productInfos.get(i).name() + " -> "
-                            + productInfos.get(i).sellerURL());
+        File productsResult = new File("src/main/java/org/pricegrab/productsResult.txt");
+        try (PrintWriter printWriter = new PrintWriter(productsResult)) {
+            printWriter.println("---------------Search Result--------------");
+            for (int i = 0; i < productInfos.size(); i++) {
+                printWriter.println(
+                        i + 1 + "- " + "Price: " + productInfos.get(i).price() + " " + productInfos.get(
+                                i).currency() + " -> " + productInfos.get(i).name() + " -> "
+                                + productInfos.get(i).sellerURL());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
+
     }
 }
 

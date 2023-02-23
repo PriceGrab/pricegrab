@@ -12,7 +12,7 @@ public class Visitor {
     public Visitor() {
     }
 
-    public void run() throws IOException {
+    public int run() throws IOException {
         int choice;
 
         do {
@@ -40,10 +40,10 @@ public class Visitor {
                     login();
                     break;
                 case 9:
-                    return;
+                    return 9;
             }
             if (choice == 0)
-                System.exit(0);
+                return 0;
         } while (true);
     }
 
@@ -58,7 +58,7 @@ public class Visitor {
         System.out.println();
 
         new API(country, searchValue).post(
-                "google");// ex. "amazon", "us", "macbook pro 2021 silver 14-inch m1 16gb ram new 512GB refurbished" more detailed search == higher accuracy results
+                "google");// head and shoulders Classic shampoo 90 ml --- ex. "amazon", "us", "macbook pro 2021 silver 14-inch m1 16gb ram new 512GB refurbished" more detailed search == higher accuracy results
         //fixed stores for now just to simplify things
         //the google value gives us several stores in fact, like walmart, amazon, google shopping, apple.com, adorama.com and many more...
         //the amazon value gives us several products but within amazon.com only.
