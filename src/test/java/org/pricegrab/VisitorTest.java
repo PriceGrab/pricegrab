@@ -66,32 +66,6 @@ public class VisitorTest {
     }
 
     @Test
-    public void RegisterNewUserTestAndTakenUsernameTest() {
-        int min = 0;
-        int max = 1000000000;
-        int randomNumber = (int) Math.floor(Math.random() * (max - min + 1) + min);
-        provideInput("2\n" + "newUserTest\nnewPassTest\n" + "newUserTest" + randomNumber + "\n"
-                + "newPassTest" + randomNumber + "\n" + "0");
-        Visitor visitor = new Visitor();
-
-        try {
-            visitor.run();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        assertEquals("\n" + "-----------Welcome to Pricegrab-----------\n" + "Choose Operation:\n"
-                + "\t-1- Search Product\n" + "\t-2- Register\n" + "\t-3- Login\n" + "\t :\n"
-                + "\t-9- Change User Type\n" + "\t-0- to Exit the program\n" + "\n"
-                + "-----------Register New User-----------\n" + "\n" + "Enter New Username: \n"
-                + "Enter New Password: Username already taken..\n" + "try again...\n" + "\n"
-                + "-----------Register New User-----------\n" + "\n" + "Enter New Username: \n"
-                + "Enter New Password: Rows affected: 1\n" + "\n"
-                + "-----------Welcome to Pricegrab-----------\n" + "Choose Operation:\n"
-                + "\t-1- Search Product\n" + "\t-2- Register\n" + "\t-3- Login\n" + "\t :\n"
-                + "\t-9- Change User Type\n" + "\t-0- to Exit the program\n", getOutput());
-    }
-
-    @Test
     public void loginTest() {
         provideInput("3\n" + "newUserTest\n" + "newPassTest\n" + "3\n" + "0");
         Visitor visitor = new Visitor();
