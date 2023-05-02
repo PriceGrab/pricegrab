@@ -31,3 +31,10 @@
 	31- Username: newUserTest457789279 - password: newPassTest457789279
 	32- Username: newUserTest322171247 - password: newPassTest322171247
 	33- Username: newUserTest52799633 - password: newPassTest52799633
+<<<<<<< HEAD
+=======
+	34- Username: newUserTest12867828 - password: newPassTest12867828
+	35- Username: newUserTest313849816 - password: newPassTest313849816
+	36- Username: newUserTest646058390 - password: newPassTest646058390
+	37- Username: newUserTest901593662 - password: newPassTest901593662
+>>>>>>> ff3cb1e (untracking unnecessary files)

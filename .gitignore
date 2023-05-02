@@ -17,4 +17,9 @@ buildNumber.properties
 # Eclipse Core
 .project
 # JDT-specific (Eclipse Java Development Tools)
+<<<<<<< HEAD
 .classpath
+=======
+.classpath
+.circleci/
+>>>>>>> ff3cb1e (untracking unnecessary files)
