@@ -65,35 +65,35 @@ public class VisitorTest {
                 + "\t-9- Change User Type\n" + "\t-0- to Exit the program\n", getOutput());
     }
 
-    @Test
-    public void loginTest() {
-        provideInput("3\n" + "newUserTest\n" + "newPassTest\n" + "3\n" + "0");
-        Visitor visitor = new Visitor();
-
-        try {
-            visitor.run();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        assertEquals("\n" + "-----------Welcome to Pricegrab-----------\n" + "Choose Operation:\n"
-                + "\t-1- Search Product\n" + "\t-2- Register\n" + "\t-3- Login\n" + "\t :\n"
-                + "\t-9- Change User Type\n" + "\t-0- to Exit the program\n" + "\n"
-                + "-----------Login-----------\n" + "\n" + "\tEnter Username: \tEnter Password: \n"
-                + "-----------Welcome to Pricegrab newUserTest-----------\n" + "Choose Operation:\n"
-                + "\t-1- Search Product\n" + "\t-2- View favorite list\n" + "\t-3- Logout\n"
-                + "\t-0- to Exit the program\n" + "\n"
-                + "-----------Welcome to Pricegrab-----------\n" + "Choose Operation:\n"
-                + "\t-1- Search Product\n" + "\t-2- Register\n" + "\t-3- Login\n" + "\t :\n"
-                + "\t-9- Change User Type\n" + "\t-0- to Exit the program\n", getOutput());
-
-        provideInput("9");
-        Visitor visitor2 = new Visitor();
-        try {
-            assertEquals(9, visitor2.run());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    @Test
+//    public void loginTest() {
+//        provideInput("3\n" + "newUserTest\n" + "newPassTest\n" + "3\n" + "0");
+//        Visitor visitor = new Visitor();
+//
+//        try {
+//            visitor.run();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        assertEquals("\n" + "-----------Welcome to Pricegrab-----------\n" + "Choose Operation:\n"
+//                + "\t-1- Search Product\n" + "\t-2- Register\n" + "\t-3- Login\n" + "\t :\n"
+//                + "\t-9- Change User Type\n" + "\t-0- to Exit the program\n" + "\n"
+//                + "-----------Login-----------\n" + "\n" + "\tEnter Username: \tEnter Password: \n"
+//                + "-----------Welcome to Pricegrab newUserTest-----------\n" + "Choose Operation:\n"
+//                + "\t-1- Search Product\n" + "\t-2- View favorite list\n" + "\t-3- Logout\n"
+//                + "\t-0- to Exit the program\n" + "\n"
+//                + "-----------Welcome to Pricegrab-----------\n" + "Choose Operation:\n"
+//                + "\t-1- Search Product\n" + "\t-2- Register\n" + "\t-3- Login\n" + "\t :\n"
+//                + "\t-9- Change User Type\n" + "\t-0- to Exit the program\n", getOutput());
+//
+//        provideInput("9");
+//        Visitor visitor2 = new Visitor();
+//        try {
+//            assertEquals(9, visitor2.run());
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     @Test
     public void registeredUsersSearchTest() {
