@@ -1,10 +1,6 @@
 package org.pricegrab;
 
 import java.io.*;
-<<<<<<< HEAD
-import java.sql.SQLException;
-=======
->>>>>>> ff3cb1e (untracking unnecessary files)
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.AfterEach;
